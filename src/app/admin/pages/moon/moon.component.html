@@ -1,0 +1,118 @@
+
+<div class="card mt-5">
+<div class="card-body mt-5">
+  <h1 class="text-center">Moon Management</h1>
+
+  <!-- Create Button -->
+  <div class="button-group">
+    <button 
+      *ngIf="!showCreateForm && !editingId" 
+      (click)="toggleCreateForm()"
+      class="btn btn-dark">
+      + Create New Moon
+    </button>
+  </div>
+  <!-- Error State -->
+  <div *ngIf="error" class="error-message text-center" style="font-size: 20px;">
+    ✗ {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-message text-center" style="font-size: 20px;">
+    Loading...
+  </div>
+  <!-- Create Form -->
+  <div *ngIf="showCreateForm" class="form-container">
+    <form (ngSubmit)="createProduct()" class="product-form">
+    <div class="row" style="display: flex;">
+        <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Moon Name *</label>
+        <input class="form-control col-md-9"
+          type="text" style="font-size: medium;"
+          [(ngModel)]="formData.moon_Name" 
+          name="moon_Name"
+          placeholder="Enter Moon name"
+          required>
+      </div>
+        </div>
+        </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-success" [disabled]="loading">
+          {{ loading ? 'Creating...' : 'Create Moon' }}
+        </button>
+        <button type="button" (click)="toggleCreateForm()" class="btn btn-secondary" style="margin-left: 10px;">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Edit Form -->
+  <div *ngIf="editingId" class="form-container">
+    <form (ngSubmit)="updateProduct()" class="product-form">
+      <div class="row" style="display: flex;">
+        <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Moon Name *</label>
+        <input class="form-control col-md-9"
+          type="text" style="font-size: medium;"
+          [(ngModel)]="formData.moon_Name" 
+          name="moon_Name"
+          placeholder="Enter Moon name"
+          required>
+      </div>
+     </div>
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-success" [disabled]="loading">
+          {{ loading ? 'Updating...' : 'Update Moon' }}
+        </button>
+        <button type="button" (click)="cancelEdit()" class="btn btn-secondary" style="margin-left: 10px;">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+<div class="card" *ngIf="!loading && Moons.length > 0 && !showCreateForm && !editingId">
+  <div class="card-body">
+<div class="table-responsive" style="max-height: 400px;width: 50%; max-width: 100%; overflow-y: visible;">
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark sticky-top">
+      <tr>
+        <th>Moon Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of Moons">
+        <td>{{p.moon_Name}}</td>
+        <td>
+          <button
+            class="btn btn-outline-success btn-sm me-1"
+            (click)="startEdit(p)"
+            title="Edit"
+          >   <i class="fa fa-edit"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="deleteMoon(p.id)"
+            title="Delete"
+          >  <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      <!-- Empty State -->
+      <tr *ngIf="Moons.length === 0">
+        <td colspan="5" class="text-center text-muted py-4">
+          No categories found
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+</div>
+</div>

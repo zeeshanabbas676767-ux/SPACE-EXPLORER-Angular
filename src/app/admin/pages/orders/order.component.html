@@ -1,0 +1,124 @@
+
+<div class="card mt-5">
+  <div class="card-body mt-5">
+    <h1 class="text-center">Orders Management</h1>
+  <!-- Error State -->
+  <div *ngIf="error" class="error-message text-center" style="font-size: 20px;">
+    ✗ {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading-message text-center" style="font-size: 20px;">
+    Loading...
+  </div>
+   <div class="table-responsive mt-5" style="max-height: 400px; overflow-y: visible;">
+  <table class="table table-bordered table-hover align-middle txt-center">
+    <thead class="sticky-top table-dark">
+        <tr>
+          <th>Image</th> 
+          <th>User Name</th>
+          <th>User Email</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Qty</th>
+        <th>Total</th> 
+        <th>Status</th> 
+        <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <ng-container *ngFor="let order of orders">
+        <ng-container *ngFor="let item of order.items; let i = index">
+          <tr>
+            <td>
+              <img
+                src="{{ item.imageUrl }}"
+                alt="Product"
+                width="60"
+                class="rounded"  />
+            </td>
+            <td>{{ order.userFullName }}</td>
+            <td>{{ order.userEmail }}</td>
+            <td class="text-start fw-semibold"> {{ item.productName }} </td>
+            <td>Rs. {{ item.price }}</td>
+            <td>
+              <span class="fw-bold">{{ item.quantity }}</span>
+            </td>
+            <td *ngIf="i === 0" [attr.rowspan]="order.items.length">
+              <strong>Rs. {{ order.totalAmount }}</strong>
+            </td>
+            <td *ngIf="i === 0" [attr.rowspan]="order.items.length">
+              <span
+                class="badge px-3 py-2" style="font-size: 16px;border-radius: 20px;"
+                [ngClass]="{
+                  'bg-primary': order.status === OrderStatus.Pending,
+                  'bg-success': order.status === OrderStatus.Paid,
+                  'bg-danger': order.status === OrderStatus.PaymentFailed,
+                  'bg-info': order.status === OrderStatus.Shipped,
+                  'bg-secondary': order.status === OrderStatus.Cancelled
+                }"
+              >
+               {{ OrderStatus[order.status] }}
+              </span>
+            </td>
+            <td *ngIf="i === 0" [attr.rowspan]="order.items.length">
+
+<div ngbDropdown>
+<button class="btn bg-gradient-info text-light btn-sm dropdown-toggle"
+ngbDropdownToggle
+  type="button" data-bs-toggle="dropdown"> 
+  {{ getStatusLabel(order.status) }} </button>
+
+
+  <ul ngbDropdownMenu>
+    <li>
+      <button ngbDropdownItem 
+        (click)="updateOrderStatus(order.id, OrderStatus.Pending)" style="color: black;">
+        Pending
+      </button>
+    </li>
+
+    <li>
+      <button ngbDropdownItem 
+        (click)="updateOrderStatus(order.id, OrderStatus.Paid)" style="color: black;">
+        Paid
+      </button>
+    </li>
+
+    <li>
+      <button ngbDropdownItem 
+        (click)="updateOrderStatus(order.id, OrderStatus.PaymentFailed)" style="color: black;">
+        Payment Failed
+      </button>
+    </li>
+
+    <li>
+      <button ngbDropdownItem 
+        (click)="updateOrderStatus(order.id, OrderStatus.Shipped)" style="color: black;">
+        Shipped
+      </button>
+    </li>
+
+    <li> 
+      <button ngbDropdownItem 
+        (click)="updateOrderStatus(order.id, OrderStatus.Cancelled)" style="color: black;">
+        Cancelled
+      </button>
+    </li>
+  </ul>
+</div>
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+        <tr *ngIf="orders.length === 0">
+        <td colspan="7" class="text-center text-muted py-4">
+          No Orders found
+        </td>
+      </tr>
+    </tbody>
+    </table>
+  </div>
+</div>
+</div>

@@ -1,0 +1,275 @@
+<style>
+.cart-badge {
+  position: absolute;
+  top: 15px;  
+  right: 8px; 
+  background-color: #ff0000; 
+  color: white;             
+  font-size: 1.0em;         
+  font-weight: bold;        
+  border-radius: 50%;        
+  height: 25px;             
+  width: 25px;              
+  line-height: 25px;       
+  text-align: center;       
+  }
+ </style>
+
+   <!-- Topbar -->
+  <div class="top-bar text-white py-2" style="width: 98.8%">
+    <div class="container d-flex justify-content-between align-items-center">
+     <div class="left-top-bar">
+					🚀	In SpaceExplorer, you can know everything about space and also buy space related products. 
+					</div>
+
+					<div class="right-top-bar flex-w h-full">
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							Help & FAQs
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							My Account
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							EN
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							USD
+						</a>
+					</div>
+    </div>
+  </div>
+   
+   <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm" style="position:fixed;width: 98.8%;">
+    <div class="container-fluid">
+      <!-- Search Field (Left Side) -->
+      <!-- <div class="search-field d-none d-md-block">
+        <form class="d-flex align-items-center">
+          <div class="wrap-input1 w-full p-b-4 d-flex">
+            <span class="input-group-text bg-transparent border-0"><i class="mdi mdi-magnify" style="font-size: 20px;"></i></span>
+            <input class="input1 bg-none plh1 stext-107 cl7" type="text" name="email" placeholder="Search anything">
+            <div class="focus-input1 trans-04"></div>
+          </div>
+        </form>
+      </div> -->
+      
+                   <ul class="main-menu">
+                     <li>
+                     <button
+    class="btn btn-link nav-link position-relative"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasNavbar"
+    aria-controls="offcanvasNavbar"
+  >
+     <i class="mdi mdi-orbit" style="font-size: 30px;">SpaceExplorer</i>
+  </button>
+                  </li>
+							<li class="active-menu">
+								<button routerLink="/home" routerLinkActive="active" class="btn btn-primary" style="border-radius: 20px;">Home</button>
+								<ul class="sub-menu">
+                
+									<li><a routerLink="/home" routerLinkActive="active">Homepage 1</a></li>
+									<li><a href="home-02.html">Homepage 2</a></li>
+									<li><a href="home-03.html">Homepage 3</a></li>
+								</ul>
+							</li>
+
+							<li>
+								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/explore-universe" routerLinkActive="active">Explore Universe</button>
+							</li>
+              <li>
+								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/shop" routerLinkActive="active">Shop</button>
+							</li> 
+							<!-- <li>
+								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/about" routerLinkActive="active">About</button>
+							</li>
+
+							<li>
+								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/contact" routerLinkActive="active">Contact</button>
+							</li> -->
+
+							<li>
+								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/admin" routerLinkActive="active"> Admin</button>
+							</li>
+            <li class="nav-item">
+  <button
+    class="btn btn-link nav-link position-relative"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasNavbar"
+    aria-controls="offcanvasNavbar"
+  >
+    <i class="mdi mdi-shopping" style="font-size: 30px;"></i>
+
+    <span *ngIf="cartCount > 0"
+          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+      {{ cartCount }}
+    </span>
+  </button>
+</li>
+ 
+				 <!-- Profile Dropdown -->
+<li class="nav-item ms-3">
+
+  <!-- LOGGED IN -->
+  <ng-container *ngIf="user">
+    <a
+      class="nav-link d-flex align-items-center"
+      data-bs-toggle="dropdown"
+      href="#" 
+    >
+      <div 
+        class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
+        style="width: 36px; height: 36px; font-weight: bold;" title="{{user.fullName}}"
+      >
+       <strong style="font-size: 20px;">  {{ (user.fullName.slice(0, 2) || '').toUpperCase() }}</strong>
+      </div>
+    </a> 
+
+    <div class="dropdown-menu dropdown-menu-end shadow p-3" style="width: 250px;border-color: black;" (click)="$event.stopPropagation()">
+       <i class="fa fa-user-circle" style="font-size: 35px; margin-left: 93px;"></i>
+      <div class="text-center mb-2">
+        <strong>{{ user.fullName }}</strong><br>
+        <small class="text-dark">{{ user.email }}</small>
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+      <button class="dropdown-item btn-gradient-danger text-dark" style="font-weight: 700;" (click)="logout();">
+        <i class="mdi mdi-logout me-2"></i> Logout
+      </button>
+    </div>
+
+  </ng-container>
+
+  <!-- NOT LOGGED IN --> 
+  <ng-container *ngIf="!user">
+    <div class="d-flex gap-2">
+      <a routerLink="/login" class="btn btn-success">Login</a>
+      <a routerLink="/register" class="btn btn-primary">Register</a>
+    </div>
+  </ng-container>
+</li>
+			</ul>   
+    </div>
+  </nav>
+<div class="offcanvas offcanvas-end"
+     tabindex="-1"
+     id="offcanvasNavbar"
+     aria-labelledby="offcanvasNavbarLabel">
+
+  <div class="offcanvas-header border-bottom">
+    <h5 class="offcanvas-title fw-bold" id="offcanvasNavbarLabel">
+      🛒 Your Cart ({{ cartCount }})
+    </h5>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body p-0 d-flex flex-column">
+
+    <!-- EMPTY CART --> 
+    <div *ngIf="cartItems.length === 0"
+         class="text-center p-4">
+      <h6 class="mb-3">Your shopping cart is empty</h6>
+      <button class="btn btn-primary"
+              routerLink="/shop"
+              data-bs-dismiss="offcanvas">
+        🛍 Go Shopping
+      </button>
+    </div>
+
+    <!-- CART TABLE -->
+    <div *ngIf="cartItems.length > 0"
+         class="table-responsive px-3"
+         style="max-height: 55vh; overflow-y: auto;">
+
+      <table class="table table-bordered align-middle text-center mb-0">
+
+        <thead class="table-light sticky-top">
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr *ngFor="let item of cartItems">
+
+            <!-- IMAGE -->
+            <td>
+              <img
+                src="{{ item.product.imageUrl }}"
+                alt="Product"
+                width="45"
+                class="rounded"
+              />
+            </td>
+
+            <!-- NAME + PRICE -->
+            <td class="text-start">
+              <div class="fw-semibold">
+                {{ item.product.name }}
+              </div>
+            </td>
+            <td>
+              Rs. {{ item.product.price }}
+            </td>
+
+            <!-- QUANTITY -->
+            <td>
+              <div class="d-flex justify-content-center align-items-center gap-1">
+
+                <span class="fw-bold px-1">
+                  {{ item.quantity }}
+                </span>
+              </div>
+            </td>
+
+            <!-- TOTAL -->
+            <td class="fw-bold">
+              Rs. {{ item.product.price * item.quantity }}
+            </td>
+
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOOTER TOTAL + BUTTONS -->
+    <div *ngIf="cartItems.length > 0"
+         class="border-top p-3 mt-auto">
+
+      <div class="d-flex justify-content-between mb-2">
+        <span class="fw-semibold">Subtotal</span>
+        <span class="fw-bold">Rs. {{ total }}</span>
+      </div>
+
+      <button class="btn btn-info w-100 mb-2"
+              routerLink="/cart"
+              data-bs-dismiss="offcanvas">
+        View Cart
+      </button>
+  <button class="btn btn-primary w-100 mb-2" [disabled]="cartItems.length === 0" (click)="createOrder()">
+        Proceed to Checkout
+      </button>
+    </div>
+ 
+  </div>
+</div>
+
+
+<style>
+  body { padding-top: 110px; } /* Adjust this value based on your header height */
+  .top-bar { font-size: 13px; }
+  .nav-link { cursor: pointer; }
+</style>

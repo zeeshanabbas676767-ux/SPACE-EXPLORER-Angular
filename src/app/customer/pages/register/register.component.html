@@ -1,0 +1,107 @@
+
+<style>
+  button.btn:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all;
+}
+
+</style>
+<div class="card mt-5">
+<div class="card-body mt-5">
+<div class="container mt-5" style="max-width: 400px;">
+  <h3 class="mb-3 text-center">Register</h3>
+
+  <form (ngSubmit)="  submit()" #registerForm="ngForm">
+   <!-- <div class="text-center">
+     <span *ngIf="errorMessage" class="text-danger">  {{ errorMessage }}</span>
+            <span *ngIf="successMessage" class="text-success"> {{ successMessage }}</span>
+   </div> -->
+    
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input
+        type="text"
+        class="form-control "
+        name="fullName"
+        placeholder="Enter Full Name" style="font-size: medium;"
+        [(ngModel)]="fullName"
+        required
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        name="email"
+          placeholder="Enter Email" style="font-size: medium;"
+        [(ngModel)]="email"
+        required
+      />
+    </div>
+
+ <div class="mb-3">
+      <label>Password</label>
+      <div class="input-group">
+        <input
+          class="form-control"
+          name="password"
+            placeholder="Enter Password" style="font-size: medium;"
+           [type]="showPassword ? 'text' : 'password'"  
+          [(ngModel)]="password"
+          required
+          minlength="6"
+        />
+
+        <button
+          type="button"
+          class="btn btn-sm bg-dark text-white" 
+          (click)="togglePassword()" title="Show/Hide"
+        >
+           <i class="fa fa-eye"></i> 
+        </button>
+      </div>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="mb-3"> 
+      <label class="dis-flex">Confirm Password 
+        <strong *ngIf="password != confirmPassword"
+        style="margin-left: 10px;color: red;"> Both Passwords should be same </strong>
+      </label>
+      <div class="input-group" >
+        <input 
+          class="form-control"
+           [type]="showConfirmPassword ? 'text' : 'password'" 
+          name="confirmPassword"
+            placeholder="Enter Confirm Password" style="font-size: medium;"
+          [(ngModel)]="confirmPassword"
+          required
+        />
+         <button
+          type="button"
+          class="btn btn-sm bg-dark text-white" 
+          (click)="toggleConfirmPassword()"  title="Show/Hide"
+        >
+          <i class="fa fa-eye"></i> 
+        </button>
+      </div>
+    </div> 
+
+      <button
+      type="submit"
+      class="btn btn-primary w-100"
+      [disabled]="!email || !fullName || !password || !confirmPassword || password != confirmPassword"
+    >
+      Register
+    </button>
+        <a routerLink="/login" class="btn btn-link text-primary mt-2 d-block">
+           Already have an account? Login</a>
+       
+  </form>
+
+
+</div>
+</div>
+</div>

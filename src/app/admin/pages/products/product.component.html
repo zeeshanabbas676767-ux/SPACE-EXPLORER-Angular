@@ -1,0 +1,302 @@
+
+<style>
+
+  button.btn:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all;
+}
+
+</style>
+
+<div class="card mt-5">
+<div class="card-body mt-5">
+  <h1 class="text-center">Products Management</h1>
+
+  <!-- Create Button -->
+  <div class="button-group">
+    <button 
+      *ngIf="!showCreateForm && !editingId" 
+      (click)="toggleCreateForm()"
+      class="btn btn-dark">
+      + Create New Product
+    </button>
+  </div>
+  <!-- Error State -->
+  <div *ngIf="error" class="error-message text-center" style="font-size: 20px;">
+    ✗ {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-message text-center" style="font-size: 20px;">
+    Loading...
+  </div>
+  <!-- Create Form -->
+  <div *ngIf="showCreateForm" class="form-container">
+    <form (ngSubmit)="createProduct()" class="product-form">
+    <div class="row" style="display: flex;">
+        <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Product Name *</label>
+        <input class="form-control col-md-9"
+          type="text"  style="font-size: medium;"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter product name"
+          required>
+      </div>
+        </div>
+        <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Price *</label>
+        <input class="form-control col-md-9"
+          type="number"  style="font-size: medium;"
+          [(ngModel)]="formData.price" 
+          name="price"
+          placeholder="Enter price"
+          required>
+      </div>
+        </div>
+         <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Stock *</label>
+        <input class="form-control col-md-9"
+          type="number"  style="font-size: medium;"
+          [(ngModel)]="formData.stock" 
+          name="stock"
+          placeholder="Enter stock"
+          required>
+      </div>
+        </div>
+        <div class="col-md-3 mt-2">
+           <div class="form-group">
+          <label style="font-size: large;">Select Category *</label>
+       <select class="form-control  col-md-9"  style="font-size: medium;"
+    [(ngModel)]="formData.categoryId"
+    name="categoryId" [ariaPlaceholder]=""
+    required>
+   <option [ngValue]="" disabled selected> Select Category </option>
+    <option *ngFor="let c of categories" [value]="c.categoryId">
+      {{ c.category_Name }}
+    </option>
+  </select>
+  </div>
+  </div>
+
+<div class="col-md-3">
+  <div class="form-group">
+    <label style="font-size: large;">Image *</label>
+
+    <button
+      type="button"
+      class="btn btn-info btn-sm"
+      (click)="fileInput.click()"
+    >
+      Choose Image
+    </button>
+
+    <input
+      type="file"
+      #fileInput
+      hidden
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+</div>
+
+<div class="col-md-3">
+  <div class="form-group">
+    <label style="font-size: large;">Description *</label>
+    <input
+      class="form-control col-md-9"
+      rows="3"  style="font-size: medium;"
+      [(ngModel)]="formData.description"
+      name="description"
+       placeholder="Enter description"
+      required
+    >
+  </div>
+</div>
+
+        </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-dark" [disabled]="loading">
+          {{ loading ? 'Creating...' : 'Create Product' }}
+        </button>
+        <button type="button" (click)="toggleCreateForm()" class="btn btn-secondary"  style="margin-left: 10px;">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Edit Form -->
+  <div *ngIf="editingId" class="form-container">
+    <form (ngSubmit)="updateProduct()" class="product-form">
+      <div class="row" style="display: flex;">
+        <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Product Name *</label>
+        <input class="form-control col-md-9"
+          type="text"  style="font-size: medium;"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter product name"
+          required>
+      </div>
+     </div>
+      <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Price *</label>
+        <input class="form-control col-md-9"
+          type="number"  style="font-size: medium;"
+          [(ngModel)]="formData.price" 
+          name="price"
+          placeholder="Enter price"
+          min="0"
+          step="0.01"
+          required>
+      </div>
+     </div>
+       <div class="col-md-3">
+      <div class="form-group">
+        <label style="font-size: large;">Stock *</label>
+        <input class="form-control col-md-9"
+          type="number"  style="font-size: medium;"
+          [(ngModel)]="formData.stock" 
+          name="stock"
+          placeholder="Enter stock"
+          required>
+      </div>
+        </div>
+ <div class="col-md-3">
+  <div class="form-group">
+  <label style="font-size: large;">Select Category</label>
+  <select
+   class="form-control col-md-9"
+    [(ngModel)]="formData.categoryId"
+    name="categoryId"  style="font-size: medium;"
+    required>
+    <option value="" disabled>Select Category</option>
+    <option *ngFor="let c of categories" [value]="c.categoryId">
+      {{ c.category_Name }}
+    </option>
+  </select>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="form-group">
+    <label style="font-size: large;">Image *</label>
+<!-- <img [src]="p.imageUrl" alt="{{ p.name }}" class="product-img"/> -->
+
+<img ngModel="imageUrl" class="product-img"/>
+    <button
+      type="button"
+      class="btn btn-info btn-sm"
+      (click)="fileInput.click()"
+    >
+      Choose Image
+    </button>
+
+    <input
+      type="file"
+      #fileInput
+      hidden
+      accept="image/*"
+      (change)="onFileSelected($event)"
+    />
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="form-group">
+    <label style="font-size: large;">Description *</label>
+    <input
+      class="form-control col-md-9"
+      [(ngModel)]="formData.description"
+      name="description"  style="font-size: medium;"
+       placeholder="Enter description"
+      required>
+  </div>
+</div>
+      </div>
+      <div class="form-buttons">
+        <button type="submit" class="btn btn-success" [disabled]="loading">
+          {{ loading ? 'Updating...' : 'Update Product' }}
+        </button>
+        <button type="button" (click)="cancelEdit()" class="btn btn-secondary"  style="margin-left: 10px;">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+
+
+    <!-- Universe Data List -->
+   <div class="d-flex justify-content-between align-items-center mt-3" style="width: 300px;margin-left:400px">
+  <button class="btn btn-outline-primary btn-sm" 
+          (click)="previousPage()" 
+          [disabled]="currentPage === 1">
+    Previous
+  </button>
+
+  <span style="color: black;">Page {{ currentPage }} of {{ totalPages }}</span>
+
+  <button class="btn btn-outline-primary btn-sm" 
+          (click)="nextPage()" 
+          [disabled]="currentPage === totalPages">
+    Next
+  </button>
+</div>
+
+<div class="card" *ngIf="!loading && products.length > 0 && !showCreateForm && !editingId">
+  <div class="card-body">
+<div class="table-responsive" style="max-height: 400px; overflow-y: visible;">
+  <table class="table table-bordered table-hover align-middle txt-center">
+    <thead class="table-dark sticky-top">
+      <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Price</th>
+        <th>Description</th>
+        <th>Stock</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of products">
+        <td><img [src]="p.imageUrl" alt="{{ p.name }}" class="product-img"/></td>
+        <td> {{ p.name }}</td>
+        <td><span>{{ p.categoryName }}</span></td>
+        <td>Rs. {{ p.price}}</td>
+        <td>{{p.description}}</td>
+        <td>{{p.stock}}</td>
+        <td>
+          <button
+            class="btn btn-outline-success btn-sm me-1"
+            (click)="startEdit(p)"
+            title="Edit"
+          >   <i class="fa fa-edit"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="deleteProduct(p.id)"
+            title="Delete"
+          >  <i class="fa fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+      <!-- Empty State -->
+      <tr *ngIf="products.length === 0">
+        <td colspan="5" class="text-center text-muted py-4">
+          No products found
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+  </div>
+</div>
+</div>
+</div>

@@ -1,0 +1,142 @@
+
+
+<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+  
+   <!-- Topbar -->
+  <div class="top-bar text-white py-2" style="width: 98.8%">
+    <div class="container d-flex justify-content-between align-items-center">
+     <div style="margin-left: 400px;font-size: 20px;">
+              <button
+    class="btn btn-link nav-link position-relative"
+    type="button"
+    routerLink="/admin/dashboard"
+    
+  > 
+     <i class="mdi mdi-orbit" style="font-size: 30px;">SpaceExplorer</i>
+     <strong>Administrator</strong>
+  </button> 
+          
+    </div>
+    
+<!-- 
+					<div class="right-top-bar flex-w h-full">
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							Help & FAQs
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							My Account
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							EN
+						</a>
+
+						<a href="#" class="flex-c-m trans-04 p-lr-25">
+							USD
+						</a>
+					</div> -->
+    </div>
+  </div>
+
+   <!-- <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start" style="margin-left: 470px;">
+  
+    <a class="navbar-brand brand-logo" href="../index.html"><img src="../assets/template-admin/images/logo.svg" alt="logo" /></a>
+    <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../assets/template-admin/images/logo-mini.svg" alt="logo" /></a>
+  </div>  -->
+  
+  <div class="navbar-menu-wrapper d-flex align-items-stretch" style="margin-left: 20px;">
+    <!-- <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+      <span class="mdi mdi-menu"></span>
+    </button> -->
+     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      				 <!-- Profile Dropdown -->
+             
+     <li>
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/dashboard">Dashboard</button>
+		</li>
+     <li>
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/products">Space Products</button>
+		</li>
+     <li>
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/category">Category</button>
+		</li>
+     <li>
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/orders">Orders</button>
+		</li>
+  
+     <li>
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/universeData">Universe Data</button>
+		</li>
+     <li>
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/users">Users</button>
+    </li>
+  <li style="margin-left: 20px;">
+  <button
+    class="btn btn-link nav-link position-relative"
+    type="button"
+    data-bs-toggle="offcanvas"
+    data-bs-target="#offcanvasNavbar"
+    aria-controls="offcanvasNavbar"
+  >
+    <i class="mdi mdi-atom" style="font-size: 30px;"></i>
+  </button>
+  
+		</li>
+     <li style="margin-left: 20px;">
+				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/home">Back To Website</button>
+		</li>
+        
+    </ul>
+ </div>
+</nav>
+
+
+
+<div class="offcanvas offcanvas-end"
+     tabindex="-1"
+     id="offcanvasNavbar"
+     aria-labelledby="offcanvasNavbarLabel">
+
+  <div class="offcanvas-header border-bottom">
+<h3>Data of Universe</h3>
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body p-0 d-flex flex-column">
+
+    <!-- EMPTY CART --> 
+    <div class="text-center p-4">
+      <button class="btn btn-dark mb-3 mb-3"
+              routerLink="/admin/planet"
+              data-bs-dismiss="offcanvas">
+        Planets
+      </button><br>
+       <button class="btn btn-dark mb-3"
+              routerLink="/admin/galaxy"
+              data-bs-dismiss="offcanvas">
+        Galaxies
+      </button><br>
+       <button class="btn btn-dark mb-3"
+              routerLink="/admin/moon"
+              data-bs-dismiss="offcanvas">
+        Moons
+      </button><br>
+       <button class="btn btn-dark mb-3"
+              routerLink="/admin/asteroid"
+              data-bs-dismiss="offcanvas">
+        Asteroids
+      </button><br>
+       <button class="btn btn-dark mb-3"
+              routerLink="/admin/exoPlanet"
+              data-bs-dismiss="offcanvas">
+       Exoplanets
+      </button>
+      
+    </div>
+ 
+  </div>
+</div>

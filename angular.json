@@ -1,0 +1,135 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "ANGULAR_ECommerce2026": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+             "assets": [
+               {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              "src/favicon.ico"
+            ],
+            "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/assets/template-customer/vendor/bootstrap/css/bootstrap.min.css",
+              "src/assets/template-customer/fonts/font-awesome-4.7.0/css/font-awesome.min.css",
+              "src/assets/template-customer/fonts/iconic/css/material-design-iconic-font.min.css",
+              "src/assets/template-customer/fonts/linearicons-v1.0.0/icon-font.min.css",
+              "src/assets/template-customer/vendor/animate/animate.css",
+              "src/assets/template-customer/vendor/css-hamburgers/hamburgers.min.css",
+              "src/assets/template-customer/vendor/animsition/css/animsition.min.css",
+              "src/assets/template-customer/vendor/select2/select2.min.css",
+              "src/assets/template-customer/vendor/daterangepicker/daterangepicker.css",
+              "src/assets/template-customer/vendor/slick/slick.css",
+              "src/assets/template-customer/vendor/MagnificPopup/magnific-popup.css",
+              "src/assets/template-customer/vendor/perfect-scrollbar/perfect-scrollbar.css",
+              "src/assets/template-customer/css/util.css",
+              "src/assets/template-customer/css/main.css",
+              "src/assets/template-admin/vendors/mdi/css/materialdesignicons.min.css",
+              "src/assets/template-admin/vendors/ti-icons/css/themify-icons.css",
+              "src/assets/template-admin/vendors/css/vendor.bundle.base.css",
+              "src/assets/template-admin/vendors/font-awesome/css/font-awesome.min.css",
+              "src/assets/template-admin/vendors/select2/select2.min.css",
+              "src/assets/template-admin/vendors/owl-carousel-2/owl.carousel.min.css",
+              "src/assets/template-admin/vendors/owl-carousel-2/owl.theme.default.min.css",
+              "src/assets/template-admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css",
+              "src/assets/template-admin/vendors/codemirror/codemirror.css",
+              "src/assets/template-admin/vendors/codemirror/ambiance.css",
+              "src/assets/template-admin/css/style.css"
+            ],
+
+"scripts": [
+  "src/assets/template-customer/vendor/jquery/jquery-3.2.1.min.js",
+"src/assets/template-customer/vendor/animsition/js/animsition.min.js",
+  "src/assets/template-customer/vendor/bootstrap/js/popper.min.js",
+  "src/assets/template-customer/vendor/bootstrap/js/popper.js",
+  "src/assets/template-customer/vendor/bootstrap/js/bootstrap.min.js",
+  "src/assets/template-customer/vendor/select2/select2.min.js",
+  "src/assets/template-customer/vendor/daterangepicker/moment.min.js",
+  "src/assets/template-customer/vendor/daterangepicker/daterangepicker.js",
+  "src/assets/template-customer/vendor/slick/slick.min.js",
+  "src/assets/template-customer/js/slick-custom.js",
+"src/assets/template-customer/vendor/parallax100/parallax100.js",
+  "src/assets/template-customer/vendor/MagnificPopup/jquery.magnific-popup.min.js",
+  "src/assets/template-customer/vendor/isotope/isotope.pkgd.min.js",
+  "src/assets/template-customer/vendor/sweetalert/sweetalert.min.js",
+  "src/assets/template-customer/vendor/perfect-scrollbar/perfect-scrollbar.min.js",
+  "src/assets/template-customer/js/main.js",
+
+  "src/assets/template-admin/vendors/js/vendor.bundle.base.js",
+  "src/assets/template-admin/vendors/chart.js/chart.umd.js",
+  "src/assets/template-admin/vendors/jquery-file-upload/jquery.uploadfile.min.js",
+  "src/assets/template-admin/vendors/typeahead.js/typeahead.bundle.min.js",
+  "src/assets/template-admin/vendors/select2/select2.min.js",
+  "src/assets/template-admin/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js", 
+  "src/assets/template-admin/js/off-canvas.js",
+  "src/assets/template-admin/js/misc.js",
+  "src/assets/template-admin/js/settings.js",
+  "src/assets/template-admin/js/todolist.js",
+  "src/assets/template-admin/js/dashboard.js"
+  
+],
+"polyfills": [
+  "@angular/localize/init"
+]
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+  {
+    "type": "initial",
+    "maximumWarning": "4mb",
+    "maximumError": "5mb"
+  },
+  {
+    "type": "anyComponentStyle",
+    "maximumWarning": "10kb",
+    "maximumError": "20kb"
+  }
+],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ANGULAR_ECommerce2026:build:production"
+            },
+            "development": {
+              "buildTarget": "ANGULAR_ECommerce2026:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+      }
+    }
+  }
+}

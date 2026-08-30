@@ -1,0 +1,50 @@
+
+<div class="card mt-5">
+<div class="card-body mt-5">
+    <h1 class="text-center">Users Management</h1>
+
+      <!-- Error State -->
+  <div *ngIf="error" class="error-message text-center" style="font-size: 20px;">
+    ✗ {{ error }}
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-message text-center" style="font-size: 20px;">
+    Loading...
+  </div>
+<div class="table-responsive mt-5" style="max-height: 400px;width: 80%; max-width: 100%; overflow-y: visible;">
+  <table class="table table-bordered table-hover align-middle">
+    <thead class="table-dark sticky-top">
+      <tr>
+        <th>ID</th>
+        <th>Full Name</th>
+         <th>Email</th>
+         <th>Action</th>
+      </tr> 
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of user">
+        <td>{{p.id}}</td>
+        <td>{{p.fullName}}</td>
+         <td>{{p.email}}</td>
+        <td>
+          <button 
+            class="btn btn-outline-danger btn-sm"
+            (click)="delete(p.id)"
+            title="Delete"
+          >  <i class="fa fa-trash"></i>
+          </button>
+        </td>
+    
+    </tr>
+
+      <tr *ngIf="user.length === 0">
+        <td colspan="5" class="text-center text-muted py-4">
+          No Users found
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+</div>
