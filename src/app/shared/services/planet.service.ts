@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Planet } from "../models/planet.model";
 import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class PlanetService {
-  private apiUrl = '${environment.apiUrl}/Planets';
+  private apiUrl = `${environment.apiUrl}/Planets`;
 
   constructor(private http: HttpClient) {}
 

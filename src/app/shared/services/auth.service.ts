@@ -6,11 +6,12 @@ import { Users } from '../models/users.model';
 import { Register } from '../models/register.model';
 import { Login } from '../models/login.model';
 import { AuthResponse } from '../models/auth-Responce';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-  private api = '${environment.apiUrl}/auth';
+  private api = `${environment.apiUrl}/auth`;
   private userSubject = new BehaviorSubject<Users | null>(this.getStoredUser());
   user$ = this.userSubject.asObservable();
     

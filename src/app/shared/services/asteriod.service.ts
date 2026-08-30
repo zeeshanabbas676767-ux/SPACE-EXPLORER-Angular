@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Asteroid } from "../models/asteroid.model";
 import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class AsteroidService {
-  private apiUrl = '${environment.apiUrl}/Asteroids';
+  private apiUrl = `${environment.apiUrl}/Asteroids`;
 
   constructor(private http: HttpClient) {}
 

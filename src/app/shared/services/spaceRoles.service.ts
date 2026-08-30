@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { SpaceRoles } from "../../shared/models/spaceRoles.model";
 import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class SpaceRolesService {
-  private apiUrl = '${environment.apiUrl}/spaceRoles';
+  private apiUrl = `${environment.apiUrl}/spaceRoles`;
 
   constructor(private http: HttpClient) {}
 

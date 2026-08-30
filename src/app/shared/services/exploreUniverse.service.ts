@@ -3,11 +3,12 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { exploreUniverse } from '../models/exploreUniverse.model';
 import { Observable } from 'rxjs';
 import { CreateUD } from '../models/create-UD.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class exploreUniverseService {
   
-  private apiUrl = '${environment.apiUrl}/UniverseData'; 
+  private apiUrl = `${environment.apiUrl}/UniverseData`; 
 
   constructor(private http: HttpClient) {}
 

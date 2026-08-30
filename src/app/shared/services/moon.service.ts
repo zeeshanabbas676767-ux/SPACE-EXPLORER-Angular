@@ -2,10 +2,11 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Moon } from "../models/moon.model";
 import { Observable } from "rxjs";
+import { environment } from "../../../environments/environment";
 
 @Injectable({ providedIn: 'root' })
 export class MoonService {
-  private apiUrl = '${environment.apiUrl}/moons';
+  private apiUrl = `${environment.apiUrl}/moons`;
 
   constructor(private http: HttpClient) {}
 
