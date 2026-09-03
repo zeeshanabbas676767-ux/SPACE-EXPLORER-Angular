@@ -1,5 +1,5 @@
-		<style>
-      .shop-filter-container {
+<style>
+  .shop-filter-container {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -9,35 +9,34 @@
     padding: 20px;
     background: #f8f9fa;
     border-radius: 12px;
-}
+  }
 
-.filter-box {
+  .filter-box {
     display: flex;
     flex-direction: column;
     min-width: 180px;
-}
+  }
 
-.filter-box label {
+  .filter-box label {
     font-weight: 600;
     margin-bottom: 6px;
-}
+  }
 
-.button-box {
+  .button-box {
     justify-content: end;
-}
+  }
 
-.btn-dark {
+  .btn-dark {
     height: 42px;
     border-radius: 8px;
-}
-/*-----------------------------*/
+  }
 
-.roles-container {
+  .roles-container {
     text-align: center;
     margin-bottom: 30px;
-}
+  }
 
-.roles-btn {
+  .roles-btn {
     border: none;
     padding: 8px 18px;
     margin: 5px;
@@ -45,233 +44,204 @@
     background: #e9ecef;
     transition: 0.3s;
     font-weight: 500;
-}
+  }
 
-.roles-btn:hover {
+  .roles-btn:hover {
     background: #212529;
     color: white;
-}
+  }
 
-.roles-btn.active {
+  .roles-btn.active {
     background: #212529;
     color: white;
-}
-/*-----------------------------*/
+  }
 
-.product-card {
+  .product-card {
     background: white;
     border-radius: 12px;
     overflow: hidden;
     transition: 0.3s;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
+  }
 
-.product-card:hover {
+  .product-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
+  }
 
-.product-img {
+  .product-img {
     height: 200px;
     overflow: hidden;
-}
+  }
 
-.product-img img {
+  .product-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
+  }
 
-.product-info {
+  .product-info {
     padding: 15px;
     text-align: center;
-}
+  }
 
-.product-info h6 {
+  .product-info h6 {
     font-weight: 600;
     margin-bottom: 10px;
-}
+  }
 
-.price {
+  .price {
     font-weight: bold;
     color: #212529;
     margin-bottom: 15px;
-}
-/*-----------------------------*/
-   .pagination ,button.btn:disabled {
-  cursor: not-allowed !important;
-  pointer-events: all;
-}
+  }
 
-.search-box {
+  .pagination, button.btn:disabled {
+    cursor: not-allowed !important;
+    pointer-events: all;
+  }
+
+  .search-box {
     flex: 1 1 280px;
     min-width: 280px;
-}
-    </style>
-    <!-- Title page -->
-	<section class="bg-img1 txt-center p-lr-15 p-tb-92 m-tb-80"
-	 style="background-image: url('assets/template-customer/images/shop image.jpg');">
-		<h2 class="ltext-105 cl0 txt-center">
-			Explorer Universe
-		</h2>
-	</section>	
+  }
+</style>
 
-	<!-- Product -->
-	<section class="bg0 p-t-0 p-b-140">
-		<div class="container">
-			<!-- <div class="p-b-10">
-				<h3 class="ltext-103 cl5">
-					Product Overview
-				</h3>
-			</div> -->
+<section class="bg-img1 txt-center p-lr-15 p-tb-92 m-tb-80"
+  style="background-image: url('assets/template-customer/images/shop image.jpg');">
+  <h2 class="ltext-105 cl0 txt-center">
+    Explorer Universe
+  </h2>
+</section>  
 
+<section class="bg0 p-t-0 p-b-140">
+  <div class="container">
+    <div class="flex-w flex-sb-m p-b-52">
+      <div class="shop-filter-container">
+        <div class="filter-box search-box">
+          <label>Search Space Objects</label>
+          <input type="text"
+                 [(ngModel)]="searchTerm"
+                 (ngModelChange)="onSearchChange($event)"
+                 placeholder="Search planet, moon, galaxy, asteroid, exoplanet..."
+                 class="form-control" />
+        </div>
+        
+        <div class="filter-box">
+          <label>Sort By Distance from Earth</label>
+          <select class="form-select"
+                  [(ngModel)]="selectedSort"
+                  (ngModelChange)="onSortChange($event)">
+            <option value="">Nothing</option>
+            <option value="priceAsc">Distance Near → Far</option>
+            <option value="priceDesc">Distance Far → Near</option>
+            <option value="newest">New Discovery</option>
+          </select>
+        </div>
 
-			<div class="flex-w flex-sb-m p-b-52">
-<div class="shop-filter-container">
+        <div class="filter-box">
+          <label>Min Distance (km)</label>
+          <input type="number"
+                 [(ngModel)]="minPrice"
+                 placeholder="Enter Minimum Distance"
+                 class="form-control"
+                 [class.is-invalid]="minPrice !== undefined && maxPrice !== undefined && (minPrice <= 0 || maxPrice <= 0 || minPrice >= maxPrice)" />
+        </div>
 
-  <!-- Search -->
-  <div class="filter-box search-box">
-    <label>Search Space Objects</label>
-    <input type="text"
-           [(ngModel)]="searchTerm"
-           (ngModelChange)="onSearchChange($event)"
-           placeholder="Search planet, moon, galaxy, asteroid, exoplanet..."
-           class="form-control" />
-  </div>
-  
-  <!-- Sort -->
-  <div class="filter-box">
-    <label>Sort By Distance from Earth</label>
-    <select class="form-select"
-            [(ngModel)]="selectedSort"
-            (ngModelChange)="onSortChange($event)">
-      <option value="">Nothing</option>
-      <option value="priceAsc">Distance Near  → Far</option>
-      <option value="priceDesc">Distance Far → Near</option>
-      <option value="newest">New Dicovery</option>
-    </select>
-  </div>
+        <div class="filter-box">
+          <label>Max Distance (km)</label>
+          <input type="number"
+                 [(ngModel)]="maxPrice"
+                 placeholder="Enter Maximum Distance"
+                 class="form-control"
+                 [class.is-invalid]="minPrice !== undefined && maxPrice !== undefined && (minPrice <= 0 || maxPrice <= 0 || minPrice >= maxPrice)" />
+        </div>
 
-  <!-- Min Price -->
-  <div class="filter-box">
-    <label>Min Distance (km)</label>
-    <input type="number"
-           [(ngModel)]="minPrice"
-           placeholder="Enter Minimum Distance"
-           class="form-control"
-           [class.is-invalid]="minPrice !== undefined && maxPrice !== undefined && (minPrice <= 0 || maxPrice <= 0 || minPrice >= maxPrice)"
-           />
-  </div>
+        <div class="filter-box button-box">
+          <button class="btn btn-success"
+                  (click)="applyPriceFilter(minPrice || 0, maxPrice || 1000000)"
+                  [disabled]="!minPrice || !maxPrice || minPrice <= 0 || maxPrice <= 0 || minPrice >= maxPrice">
+            Apply Filter
+          </button>  
+        </div>
+        <a class="btn btn-secondary btn-sm" (click)="resetFilters()">Reset</a>
+      </div>
 
-  <!-- Max Price -->
-  <div class="filter-box">
-    <label>Max Distance (km)</label>
-    <input type="number"
-           [(ngModel)]="maxPrice"
-           placeholder="Enter Maximum Distance"
-           class="form-control"
-            [class.is-invalid]="minPrice !== undefined && maxPrice !== undefined && (minPrice <= 0 || maxPrice <= 0 || minPrice >= maxPrice)"
-            />
-  </div>
-
-  <!-- Button -->
-  <div class="filter-box button-box">
-    <button class="btn btn-success"
-            (click)="applyPriceFilter(minPrice || 0, maxPrice || 1000000)"  [disabled]="!minPrice || !maxPrice || minPrice <= 0 || maxPrice <= 0 || minPrice >= maxPrice">
-      Apply Filter
-    </button>  
-</div>
-  <a class="btn btn-secondary btn-sm"
-       (click)="resetFilters()">  
-      Reset
-  </a>
-</div>
-				<div class="flex-w flex-l-m filter-tope-group m-tb-0">
-					<button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-0"
-                      [class.how-active1]="activeroles === 'All'"
-                      (click)="filterByroles('All')">
-                          All   </button>
-					<button  class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-0"
-                           *ngFor="let roles of roles"
-                           [class.how-active1]="activeroles === roles"
-                           (click)="filterByroles(roles)">
-                                {{ roles }}   </button>
-
-				</div>
-		</div>
-<div class="row">
-		<div class="col-sm-6 col-md-4 col-lg-3 mb-4"
-     *ngFor="let product of filteredProducts">
-
-  <div class="product-card">
-
-    <div class="product-img">
-      <img [src]="product.imageUrl" alt="{{ product.name }}">
+      <div class="flex-w flex-l-m filter-tope-group m-tb-0">
+        <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-0"
+                [class.how-active1]="activeroles === 'All'"
+                (click)="filterByroles('All')">
+          All
+        </button>
+        <button class="stext-106 cl6 hov1 bor3 trans-04 m-r-32 m-tb-0"
+                *ngFor="let role of roles"
+                [class.how-active1]="activeroles === role"
+                (click)="filterByroles(role)">
+          {{ role }}
+        </button>
+      </div>
     </div>
 
-    <div class="product-info">
-      <h6>
-        <strong *ngIf="product.spaceRoleId === 7">Planet: {{ product.planet?.planet_Name }}</strong> 
-        <strong *ngIf="product.spaceRoleId === 8">Galaxy: {{ product.galaxy?.galaxy_Name }}</strong>
-        <strong *ngIf="product.spaceRoleId === 9">Moon: {{ product.moon?.moon_Name }}</strong>
-        <strong *ngIf="product.spaceRoleId === 10">Asteroid: {{ product.asteroid?.asteroid_Name }}</strong>
-        <strong *ngIf="product.spaceRoleId === 11">ExoPlanet: {{ product.exoPlanet?.exoPlanet_Name }}</strong>
-        </h6>
-      <p class="price">Distance from Earth: {{ product.distanceFromEarth }}</p>
-        <p class="price">Mass: {{ product.mass }}</p>
-         <p class="price">Radius: {{ product.radius }}</p>
-          <p class="price">Is Visible To Naked Eye?  {{ product.isVisibleToNakedEye }}</p>
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-lg-3 mb-4" *ngFor="let product of filteredProducts">
+        <div class="product-card" *ngIf="product.distanceFromEarth !== 0">
+          <div class="product-img">
+            <img [src]="product.imageUrl" alt="{{ product.name }}">
+          </div>
 
-      <!-- <button class="btn btn-dark w-100"
-              routerLink="/cart"
-              (click)="addToCart(product)">
-        Add to Cart
-      </button> -->
+          <div class="product-info">
+            <h6>
+              <!-- Displays Space Role Name followed by Object Name (e.g., Planet: Earth) -->
+              <strong>{{ product.spaceRole?.name ? product.spaceRole?.name : 'Object' }}: {{ product.name }}</strong>
+            </h6>
+            <p class="price">Distance from Earth: {{ product.distanceFromEarth }}</p>
+            <p class="price">Mass: {{ product.mass }}</p>
+            <p class="price">Radius: {{ product.radius }}</p>
+            <p class="price">Is Visible To Naked Eye? {{ product.isVisibleToNakedEye }}</p>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
   </div>
-</div>
 
-			</div>
+  <div class="text-center mt-4">
+    <button class="btn btn-secondary me-2"
+            (click)="previousPage()"
+            [disabled]="pageNumber === 1">
+      Previous
+    </button>
 
+    <span class="mt-2">
+      Page {{ pageNumber }} of {{ totalPages }}
+    </span>
 
-      <!-- <nav aria-label="Page navigation example">
+    <button class="btn btn-secondary ms-2"
+            (click)="nextPage()"
+            [disabled]="pageNumber === totalPages">
+      Next
+    </button>
+  </div>
+</section> 
+
+<nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    <li class="page-item disabled"  (click)="previousPage()"
-          [class.disabled]="pageNumber === 1">
-      <a class="page-link">Previous</a>
+    <li class="page-item"
+        [class.disabled]="pageNumber === 1"
+        (click)="previousPage()">
+      <a class="page-link" style="cursor: pointer;">Previous</a>
     </li>
-  
+
     <li class="page-item"
         *ngFor="let page of getVisiblePages()"
         [class.active]="pageNumber === page"
         (click)="goToPage(page)">
-      <a class="page-link">{{page}}</a>
+      <a class="page-link" style="cursor: pointer;">{{ page }}</a>
     </li>
-    <li class="page-item" (click)="nextPage()"
-          [class.disabled]="pageNumber === totalPages">
-      <a class="page-link" href="#">Next</a>
+
+    <li class="page-item"
+        [class.disabled]="pageNumber === totalPages"
+        (click)="nextPage()">
+      <a class="page-link" style="cursor: pointer;">Next</a>
     </li>
   </ul>
-</nav> -->
-
-		<!-- <div class="d-flex justify-content-center mt-4">
-
-  <button class="btn btn-secondary me-2"
-          (click)="previousPage()"
-          [disabled]="pageNumber === 1">
-    Previous
-  </button>
-
-  <span class="mt-2">
-    Page {{ pageNumber }} of {{ totalPages }}
-  </span>
-
-  <button class="btn btn-secondary ms-2"
-          (click)="nextPage()"
-          [disabled]="pageNumber === totalPages">
-    Next
-  </button>
-
-</div> -->
-	</section>
+</nav>

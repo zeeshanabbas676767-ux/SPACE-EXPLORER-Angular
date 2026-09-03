@@ -1,4 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'https://space-explorer.runasp.net/api'
+  production: false,
+   apiUrl: 'http://localhost:5159/api'
 }

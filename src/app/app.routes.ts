@@ -17,18 +17,18 @@ import { ContactComponent } from './customer/pages/contact/contact.component';
 import { RegisterComponent } from './customer/pages/register/register.component';
 import { LoginComponent } from './customer/pages/login/login.component';
 import { AdminUsersComponent } from './admin/pages/user/user.component';
-import { AdminPlanetComponent } from './admin/pages/planets/planets.component';
-import { AdminMoonComponent } from './admin/pages/moon/moon.component';
-import { AdminGalaxyComponent } from './admin/pages/galaxy/galaxy.component';
-import { AdminAsteroidComponent } from './admin/pages/asteroid/asteroid.component';
-import { AdminExoPlanetComponent } from './admin/pages/exoPlanet/exoPlanet.component';
 import { AdminUniverseDataComponent } from './admin/pages/universeData/universeData.component';
+import { AdminSpaceRolesComponent } from './admin/pages/spaceRoles/spaceRole.component';
+import { AdminRoleComponent } from './admin/pages/Role/Role.component';
+import { AdminRegisterComponent } from './admin/pages/register/register.component';
+import { AdminLoginComponent } from './admin/pages/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 //import { AdminGuard } from './guards/auth.guard';
 //import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   
-
+ {path: '', redirectTo: 'admin/login', pathMatch: 'full'},
   
   {
     path: '',
@@ -44,27 +44,31 @@ export const routes: Routes = [
       { path: 'contact', component: ContactComponent},
       { path: 'register', component: RegisterComponent},
       { path: 'login', component: LoginComponent},
-      { path: '', redirectTo: 'home', pathMatch: 'full' },
+     // {path: '', redirectTo: 'customer/login', pathMatch: 'full'},
+     // { path: '', redirectTo: 'home', pathMatch: 'full' },
       // { path: 'cart', canActivate: [AuthGuard],
       // loadComponent: () => import('./customer/pages/cart/cart.component').then(m => m.CartComponent) }
     ]
   },
+
+     {path: 'admin/login', component: AdminLoginComponent},
+    {path: 'admin/register', component: AdminRegisterComponent},
+
 {
   path: 'admin',
   component: AdminLayoutComponent,
+   canActivate: [AuthGuard],
   children: [
-    { path: 'dashboard', component: AdminDashboardComponent },
+  { path: '', redirectTo: 'dashboard', pathMatch: 'full' }, 
     { path: 'products', component: AdminProductListComponent },
     { path: 'category', component: AdminCategoryComponent },
     { path: 'orders', component: AdminOrderListComponent },
     { path: 'users', component: AdminUsersComponent},
-    {path: 'planet', component: AdminPlanetComponent},
-    {path: 'moon', component: AdminMoonComponent}, 
-    {path: 'galaxy', component: AdminGalaxyComponent},
-    {path: 'asteroid', component: AdminAsteroidComponent},
-    {path: 'exoPlanet', component: AdminExoPlanetComponent},
-    {path: 'universeData', component: AdminUniverseDataComponent}
-    
+    {path: 'universeData', component: AdminUniverseDataComponent},
+    {path: 'spaceRoles', component: AdminSpaceRolesComponent},
+    {path: 'role', component: AdminRoleComponent},
+     { path: 'register', component: AdminRegisterComponent},
+      { path: 'login', component: AdminLoginComponent},
    // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
    // { path: 'orders', canActivate: [AdminGuard], loadComponent: () => import('./admin/pages/orders/order.component').then(m => m.AdminOrderListComponent) }
   ]

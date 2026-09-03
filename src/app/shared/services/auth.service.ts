@@ -13,9 +13,18 @@ export class AuthService {
 
   private api = `${environment.apiUrl}/auth`;
   private userSubject = new BehaviorSubject<Users | null>(this.getStoredUser());
+
+    // Change this line
+private isLoggedInSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('user'));
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
   user$ = this.userSubject.asObservable();
     
   constructor(private http: HttpClient, private router: Router) {}
+
+    // Call this method after a successful login or register
+  setLoggedIn(status: boolean) {
+    this.isLoggedInSubject.next(status);
+  }
 
    getAll(): Observable<Users[]> {
        return this.http.get<Users[]>(`${this.api}`);
@@ -28,6 +37,7 @@ export class AuthService {
        // localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user));
         this.userSubject.next(res.user);
+         this.setLoggedIn(true);
       })
     );
   }
@@ -38,6 +48,7 @@ export class AuthService {
         // localStorage.setItem('token', res.token);
         localStorage.setItem('user', JSON.stringify(res.user));
         this.userSubject.next(res.user);
+         this.setLoggedIn(true);
       })
     );
 }
@@ -46,7 +57,8 @@ export class AuthService {
    // localStorage.removeItem('token');
     localStorage.removeItem('user');
     this.userSubject.next(null);
-    this.router.navigate(['/login']);
+      this.setLoggedIn(false);
+    this.router.navigate(['/admin/login']);
 
   }
 
@@ -54,6 +66,11 @@ export class AuthService {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+    getCurrentUserId(): number {
+  const user = this.getStoredUser();
+  // Return the user ID if found, otherwise default to 0
+  return user && user.id ? user.id : 0;
+}
   // getToken(): string | null {
   //   return localStorage.getItem('token');
   // }

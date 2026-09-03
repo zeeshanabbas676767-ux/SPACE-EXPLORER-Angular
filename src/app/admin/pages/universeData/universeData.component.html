@@ -1,243 +1,198 @@
 <style>
   label { color: white; }
-
   button.btn:disabled {
-  cursor: not-allowed !important;
-  pointer-events: all;
-}
-
+    cursor: not-allowed !important;
+    pointer-events: all;
+  }
 </style>
 
 <div class="container" style="margin-top: 100px;">
-  <h3 style="text-align:center">Universe Data</h3>
+  <h3 style="text-align:center">Universe Data Management</h3>
 
   <!-- Universe Data Form -->
   <div class="card p-3 mb-4" style="background-color: black;">
-    <div class="row">
- 
-      <!-- Dropdown 1: Space Roles Selection -->
+    <div class="row g-3">
+
+      <!-- Dropdown 1: Dynamic Space Roles -->
       <div class="col-md-4">
-        <label>Space Roles Name</label>
+        <label>Space Role Category *</label>
         <select class="form-control" [(ngModel)]="selectedSpaceRolesId" (change)="onRoleChange()"> 
           <option [ngValue]="null">Select Space Role</option>
-          <option *ngFor="let d of roles" [ngValue]="d.id">
-            {{ d.name }}
+          <option *ngFor="let r of roles" [ngValue]="r.id">
+            {{ r.name }}
+          </option>
+        </select> 
+      </div>
+
+      <!-- Dropdown 2: Dynamic Existing Object Selection or Create New -->
+      <div class="col-md-4" *ngIf="selectedSpaceRolesId !== null">
+        <label>Select {{ selectedRoleName }}</label>
+        <select class="form-control" [(ngModel)]="selectedObjectId" (change)="onObjectChange()">
+          <option [ngValue]="null">-- Add New {{ selectedRoleName }} --</option>
+          <option *ngFor="let obj of roleObjects" [ngValue]="obj.id">
+            {{ obj.name }}
           </option>
         </select>
       </div>
 
-      <!-- Dropdown 2: Contextual Object Selection -->   
+      <!-- Object Name Input -->
       <div class="col-md-4" *ngIf="selectedSpaceRolesId !== null">
-        <label>
-          <span *ngIf="selectedSpaceRolesId === 7">Planet</span>
-          <span *ngIf="selectedSpaceRolesId === 8">Galaxy</span>
-          <span *ngIf="selectedSpaceRolesId === 9">Moon</span>
-          <span *ngIf="selectedSpaceRolesId === 10">Asteroid</span>
-          <span *ngIf="selectedSpaceRolesId === 11">ExoPlanet</span>
-        </label>
-        
-        <select class="form-control" [(ngModel)]="selectedObjectId">
-          <option [ngValue]="0">Select Item</option>
-          
-          <!-- Case 1: Planets -->
-          <ng-container *ngIf="selectedSpaceRolesId === 7">
-            <option *ngFor="let s of planet" [ngValue]="s.id">{{ s.planet_Name }}</option>
-          </ng-container>
-
-          <!-- Case 2: Galaxies -->
-          <ng-container *ngIf="selectedSpaceRolesId === 8">
-            <option *ngFor="let g of galaxy" [ngValue]="g.id">{{ g.galaxy_Name }}</option>
-          </ng-container>
-
-          <!-- Case 3: Moons -->
-          <ng-container *ngIf="selectedSpaceRolesId === 9">
-            <option *ngFor="let m of moon" [ngValue]="m.id">{{ m.moon_Name }}</option>
-          </ng-container>
-
-          <!-- Case 4: Asteroids -->
-          <ng-container *ngIf="selectedSpaceRolesId === 10">
-            <option *ngFor="let a of asteroid" [ngValue]="a.id">{{ a.asteroid_Name }}</option>
-          </ng-container>
-
-          <!-- Case 5: ExoPlanets -->
-          <ng-container *ngIf="selectedSpaceRolesId === 11">
-            <option *ngFor="let e of exoPlanet" [ngValue]="e.id">{{ e.exoPlanet_Name }}</option>
-          </ng-container>
-        </select>
-      </div>
- 
-          <div class="col-md-4">
-      <div class="form-group">
-        <label style="font-size: large;">Distance from Earth *</label>
-        <input class="form-control col-md-9"
-          type="number"  style="font-size: medium;"
-          [(ngModel)]="inputData.distanceFromEarth" 
-          name="distanceFromEarth"
-          placeholder="Enter distance from Earth"
-          required>
-      </div>
+        <div class="form-group">
+          <label style="font-size: large;">{{ selectedRoleName }} Name *</label>
+          <input class="form-control"
+                 type="text"
+                 [(ngModel)]="inputData.name"
+                 name="objectName"
+                 [placeholder]="'Enter ' + selectedRoleName + ' name'"
+                 required>
         </div>
-         <div class="col-md-4">
-      <div class="form-group">
-        <label style="font-size: large;">Radius *</label>
-        <input class="form-control col-md-9"
-          type="number"  style="font-size: medium;"
-          [(ngModel)]="inputData.radius" 
-          name="radius"
-          placeholder="Enter radius"
-          required>
       </div>
-        </div>
-         <div class="col-md-4">
-      <div class="form-group">
-        <label style="font-size: large;">Mass of Object*</label>
-        <input class="form-control col-md-9"
-          type="number"  style="font-size: medium;"
-          [(ngModel)]="inputData.mass" 
-          name="mass"
-          placeholder="Enter mass"
-          required>
-      </div>
-        </div>
-          <div class="col-md-4">
-      <div class="form-group">
-        <label style="font-size: large;">Is Visible to naked eyes*</label>
-        <select class="form-control  col-md-9"  style="font-size: medium;"
-    [(ngModel)]="inputData.isVisibleToNakedEye"
-    name="isVisibleToNakedEye" [ariaPlaceholder]=""
-    >
-    <option [ngValue]="true">Yes</option>
-    <option [ngValue]="false">No</option>
-  </select>
-      </div>
-        </div>
+
+      <!-- Distance From Earth -->
       <div class="col-md-4">
-  <div class="form-group">
-    <label style="font-size: large;">Image *</label>
-
-    <div class="d-flex align-items-center gap-2 flex-wrap">
-      <button
-        type="button"
-        class="btn btn-info btn-sm"
-        (click)="fileInput.click()"
-      >
-        Choose Image
-      </button>
-
-      <input
-        type="file"
-        name="imageUrl"
-        #fileInput
-        hidden
-        accept="image/*"
-        (change)="onFileSelected($event)"
-      />
-
-      <div *ngIf="previewUrl" class="d-flex align-items-center gap-2">
-        <img [src]="previewUrl" alt="Image preview" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #fff;">
-        <strong style="color: white;">{{fileName}}</strong>
+        <div class="form-group">
+          <label style="font-size: large;">Distance from Earth *</label>
+          <input class="form-control"
+                 type="number"
+                 [(ngModel)]="inputData.distanceFromEarth" 
+                 name="distanceFromEarth"
+                 placeholder="Enter distance from Earth"
+                 required>
+        </div>
       </div>
-    </div>
-  </div>
-      </div>
-    <div class="col-md-4">
-  <div class="form-group">
-    <label style="font-size: large;">Description *</label>
-    <input
-      class="form-control col-md-9"
-      rows="3"  style="font-size: medium;"
-      [(ngModel)]="inputData.description"
-      name="description"
-       placeholder="Enter description"
-      required
-    >
-  </div>
-    </div>
 
-        <div class="form-buttons">
-        <button type="submit" class="btn btn-dark" [disabled]="selectedSpaceRolesId === 0 ||
-         selectedObjectId === 0 || loading || !inputData.distanceFromEarth || !inputData.radius ||
-          !inputData.mass || inputData.isVisibleToNakedEye === null || !inputData.description || !previewUrl"
-          (click)="saveUniverseData()">
-        {{ loading
-    ? (isEditMode ? 'Updating...' : 'Creating...')
-    : (isEditMode ? 'Update' : 'Create')
-}}
+      <!-- Radius -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label style="font-size: large;">Radius *</label>
+          <input class="form-control"
+                 type="number"
+                 [(ngModel)]="inputData.radius" 
+                 name="radius"
+                 placeholder="Enter radius"
+                 required>
+        </div>
+      </div>
+
+      <!-- Mass -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label style="font-size: large;">Mass *</label>
+          <input class="form-control"
+                 type="number"
+                 [(ngModel)]="inputData.mass" 
+                 name="mass"
+                 placeholder="Enter mass"
+                 required>
+        </div>
+      </div>
+
+      <!-- Visibility -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label style="font-size: large;">Visible to Naked Eye *</label>
+          <select class="form-control" [(ngModel)]="inputData.isVisibleToNakedEye" name="isVisibleToNakedEye">
+            <option [ngValue]="true">Yes</option>
+            <option [ngValue]="false">No</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Image Upload -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label style="font-size: large;">Image *</label>
+          <div class="d-flex align-items-center gap-2 flex-wrap">
+            <button type="button" class="btn btn-info btn-sm" (click)="fileInput.click()">
+              Choose Image
+            </button>
+
+            <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)">
+
+            <div *ngIf="previewUrl" class="d-flex align-items-center gap-2">
+              <img [src]="previewUrl" alt="Preview" style="width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #fff;">
+              <strong style="color: white; font-size: small;">{{ fileName }}</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="col-md-4">
+        <div class="form-group">
+          <label style="font-size: large;">Description *</label>
+          <input class="form-control"
+                 [(ngModel)]="inputData.description"
+                 name="description"
+                 placeholder="Enter description"
+                 required>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="col-12 mt-3">
+        <button type="button" class="btn btn-dark" 
+                [disabled]="!selectedSpaceRolesId || !inputData.name || loading || !inputData.distanceFromEarth || !inputData.radius || !inputData.mass || !inputData.description || (!previewUrl && !isEditMode)"
+                (click)="saveUniverseData()">
+          {{ loading ? (isEditMode ? 'Updating...' : 'Creating...') : (isEditMode ? 'Update' : 'Create') }}
         </button>
-        <button type="button" class="btn btn-secondary" style="margin-left: 10px;"
-          (click)="resetForm()">
+        <button type="button" class="btn btn-secondary ms-2" (click)="resetForm()">
           Cancel
         </button>
       </div>
+
     </div>
   </div>
 
-  <!-- Universe Data List -->
-   <div class="d-flex justify-content-between align-items-center mt-3" style="width: 300px;margin-left:400px">
-  <button class="btn btn-outline-primary btn-sm" 
-          (click)="previousPage()" 
-          [disabled]="currentPage === 1">
-    Previous
-  </button>
+  <!-- Pagination Controls -->
+  <div class="d-flex justify-content-between align-items-center my-3" style="max-width: 300px; margin: 0 auto;">
+    <button class="btn btn-outline-primary btn-sm" (click)="previousPage()" [disabled]="currentPage === 1">
+      Previous
+    </button>
+    <span class="text-dark">Page {{ currentPage }} of {{ totalPages }}</span>
+    <button class="btn btn-outline-primary btn-sm" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Next
+    </button>
+  </div>
 
-  <span style="color: black;">Page {{ currentPage }} of {{ totalPages }}</span>
-
-  <button class="btn btn-outline-primary btn-sm" 
-          (click)="nextPage()" 
-          [disabled]="currentPage === totalPages">
-    Next
-  </button>
-</div>
-  <div class="container-fluid" style="overflow:auto; max-width: 100%;">
-    <table class="table table-dark">
+  <!-- Consolidated Table View -->
+  <div class="table-responsive">
+    <table class="table table-dark table-hover align-middle">
       <thead>
         <tr>
           <th>Image</th>
-            <th>Space Role</th>
-          <th>Distance From Earth</th>
+          <th>Name</th>
+          <th>Role</th>
+          <th>Distance</th>
           <th>Radius</th>
           <th>Mass</th>
-          <th>IsVisibleToNakedEye</th>
+          <th>Naked Eye</th>
           <th>Description</th>
-           <th>Planet</th>
-           <th>Galaxy</th>
-          <th>Moon</th>
-          <th>Asteroid</th>
-          <th>ExoPlanet</th>
-          <th>Action</th>
+          <th class="text-end">Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let e of UData">
-          <th>  
-            <img [src]="e.imageUrl" alt="Space Object" style="width:60px; height:60px; object-fit:cover; border-radius:6px;">
-          </th>
-           <td>{{ e.name }}</td>
-          <td>{{ e.distanceFromEarth }}</td> 
-          <td>{{ e.radius }}</td>
-          <td>{{ e.mass }}</td>
-          <td>{{ e.isVisibleToNakedEye }}</td>
-          <td>{{ e.description}} </td>
-
-          <td>{{ e.planet?.planet_Name || '-' }}</td>
-          <td>{{ e.galaxy?.galaxy_Name || '-' }}</td>
-          <td>{{ e.moon?.moon_Name || '-' }}</td>
-          <td>{{ e.asteroid?.asteroid_Name || '-' }}</td>
-          <td>{{ e.exoPlanet?.exoPlanet_Name || '-' }}</td>
+        <tr *ngFor="let item of UData">
           <td>
-            <div class="action-buttons">
-              <button class="btn btn-primary btn-sm edit me-3" (click)="editUniverseData(e)">
-                <i class="fa fa-edit" style="transform:scale(1.2);"></i> Edit
-              </button>
-              <button class="btn btn-danger btn-sm delete" (click)="removeUData(e.id)">
-                <i class="fa fa-trash" style="transform:scale(1.2);"></i> Delete
-              </button>
-            </div>
-          </td>    
+            <img [src]="item.imageUrl" alt="Space Object" style="width:50px; height:50px; object-fit:cover; border-radius:6px;">
+          </td>
+          <td class="fw-bold">{{ item.name }}</td>
+          <td><span class="badge bg-info text-dark">{{ item.spaceRole?.name || 'Unassigned' }}</span></td>
+          <td>{{ item.distanceFromEarth }}</td> 
+          <td>{{ item.radius }}</td>
+          <td>{{ item.mass }}</td>
+          <td>{{ item.isVisibleToNakedEye ? 'Yes' : 'No' }}</td>
+          <td>{{ item.description }}</td>
+          <td class="text-end">
+            <button class="btn btn-primary btn-sm me-2" (click)="editUniverseData(item)">
+              Edit
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="removeUData(item.id)">
+              Delete
+            </button>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
 </div>
-
-

@@ -31,6 +31,10 @@ selectedFile : File | null = null;
   stock: 0
 };
 
+  fileName: string = '';
+  previewUrl: string | null = null;
+  private objectUrl: string | null = null;
+
  currentPage = 1;
   pageSize = 10;
   totalItems = 0;
@@ -52,9 +56,20 @@ selectedFile : File | null = null;
 
 }
 
-    onFileSelected(event: any): void {
-  this.selectedFile = event.target.files[0];
-}
+ onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+      this.fileName = file.name;
+
+      if (this.objectUrl) {
+        URL.revokeObjectURL(this.objectUrl);
+      }
+
+      this.objectUrl = URL.createObjectURL(file);
+      this.previewUrl = this.objectUrl;
+    }
+  }
 
 
   loadProducts(): void {
@@ -115,6 +130,13 @@ createProduct(): void {
       this.products.push(product);
       this.resetForm();
       this.showCreateForm = false;
+      this.selectedFile = null;
+      this.fileName = '';
+      this.previewUrl = null;
+      if (this.objectUrl) {
+        URL.revokeObjectURL(this.objectUrl);
+        this.objectUrl = null;
+      }
     },
     error: () => {
       this.error = 'Image upload failed';
@@ -134,6 +156,7 @@ createProduct(): void {
     description: product.description || '',
     stock: product.stock
   };
+  this.previewUrl = product.imageUrl || null;
     this.showCreateForm = false;
   }
 
@@ -185,6 +208,13 @@ updateProduct(): void {
     description: '',
     //categoryName: ''
     };
+    this.selectedFile = null;
+    this.fileName = '';
+    this.previewUrl = null;
+    if (this.objectUrl) {
+      URL.revokeObjectURL(this.objectUrl);
+      this.objectUrl = null;
+    }
     this.editingId = null;
   }
 

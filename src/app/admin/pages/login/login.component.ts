@@ -10,10 +10,10 @@ import { RouterLink } from "@angular/router";
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
 }) 
-export class LoginComponent {
+export class AdminLoginComponent {
   email = '';
   password = '';
-  roleId = 4;
+  roleId = 3;
   error: string | null = null;
  loading = false;
   showPassword = false;

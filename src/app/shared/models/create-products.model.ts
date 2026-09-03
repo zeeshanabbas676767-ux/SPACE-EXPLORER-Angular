@@ -3,6 +3,6 @@ export interface CreateProduct {
   price: number;
   categoryId: number;
   description: string;
-  // imageUrl: string;
-   stock: number
+  //imageUrl: string;
+  stock: number
 }

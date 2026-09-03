@@ -1,7 +1,7 @@
 
 <div class="card mt-5">
 <div class="card-body mt-5">
-  <h1 class="text-center">Asteroid Management</h1>
+  <h1 class="text-center">Space Roles Management</h1>
 
   <!-- Create Button -->
   <div class="button-group">
@@ -9,7 +9,7 @@
       *ngIf="!showCreateForm && !editingId" 
       (click)="toggleCreateForm()"
       class="btn btn-dark">
-      + Create New Asteroid
+      + Create New Space Roles
     </button>
   </div>
   <!-- Error State -->
@@ -27,19 +27,19 @@
     <div class="row" style="display: flex;">
         <div class="col-md-3">
       <div class="form-group">
-        <label style="font-size: large;">Asteroid Name *</label>
+        <label style="font-size: large;">Space Roles Name *</label>
         <input class="form-control col-md-9"
           type="text" style="font-size: medium;"
-          [(ngModel)]="formData.asteroid_Name" 
-          name="asteroid_Name"
-          placeholder="Enter Asteroid name"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter Space Roles name"
           required>
       </div>
         </div>
         </div>
       <div class="form-buttons">
         <button type="submit" class="btn btn-success" [disabled]="loading">
-          {{ loading ? 'Creating...' : 'Create Asteroid' }}
+          {{ loading ? 'Creating...' : 'Create Space Roles' }}
         </button>
         <button type="button" (click)="toggleCreateForm()" class="btn btn-secondary" style="margin-left: 10px;">
           Cancel
@@ -54,19 +54,19 @@
       <div class="row" style="display: flex;">
         <div class="col-md-3">
       <div class="form-group">
-        <label style="font-size: large;">Asteroid Name *</label>
+        <label style="font-size: large;">Space Roles Name *</label>
         <input class="form-control col-md-9"
           type="text" style="font-size: medium;"
-          [(ngModel)]="formData.asteroid_Name" 
-          name="asteroid_Name"
-          placeholder="Enter Asteroid name"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter Space Roles name"
           required>
       </div>
      </div>
       </div>
       <div class="form-buttons">
         <button type="submit" class="btn btn-success" [disabled]="loading">
-          {{ loading ? 'Updating...' : 'Update Asteroid' }}
+          {{ loading ? 'Updating...' : 'Update Space Roles' }}
         </button>
         <button type="button" (click)="cancelEdit()" class="btn btn-secondary" style="margin-left: 10px;">
           Cancel
@@ -75,19 +75,19 @@
     </form>
   </div>
 
-<div class="card" *ngIf="!loading && Asteroids.length > 0 && !showCreateForm && !editingId">
+<div class="card" *ngIf="!loading && roles.length > 0 && !showCreateForm && !editingId">
   <div class="card-body">
 <div class="table-responsive" style="max-height: 400px;width: 50%; max-width: 100%; overflow-y: visible;">
   <table class="table table-bordered table-hover align-middle">
     <thead class="table-dark sticky-top">
       <tr>
-        <th>Asteroid Name</th>
+        <th>Space Roles Name</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let p of Asteroids">
-        <td>{{p.asteroid_Name}}</td>
+      <tr *ngFor="let p of roles">
+        <td>{{p.name}}</td>
         <td>
           <button
             class="btn btn-outline-success btn-sm me-1"
@@ -97,16 +97,16 @@
           </button>
           <button
             class="btn btn-outline-danger btn-sm"
-            (click)="deleteAsteroid(p.id)"
+            (click)="deleteSpaceRoles(p.id)"
             title="Delete"
           >  <i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>
       <!-- Empty State -->
-      <tr *ngIf="Asteroids.length === 0">
+      <tr *ngIf="roles.length === 0">
         <td colspan="5" class="text-center text-muted py-4">
-          No categories found
+          No space roles found
         </td>
       </tr>
     </tbody>

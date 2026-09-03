@@ -1,7 +1,7 @@
 
 <div class="card mt-5">
 <div class="card-body mt-5">
-  <h1 class="text-center">ExoPlanet Management</h1>
+  <h1 class="text-center">Role Management</h1>
 
   <!-- Create Button -->
   <div class="button-group">
@@ -9,7 +9,7 @@
       *ngIf="!showCreateForm && !editingId" 
       (click)="toggleCreateForm()"
       class="btn btn-dark">
-      + Create New ExoPlanet
+      + Create New Role
     </button>
   </div>
   <!-- Error State -->
@@ -27,19 +27,19 @@
     <div class="row" style="display: flex;">
         <div class="col-md-3">
       <div class="form-group">
-        <label style="font-size: large;">ExoPlanet Name *</label>
+        <label style="font-size: large;">Role Name *</label>
         <input class="form-control col-md-9"
           type="text" style="font-size: medium;"
-          [(ngModel)]="formData.exoPlanet_Name" 
-          name="exoPlanet_Name"
-          placeholder="Enter ExoPlanet name"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter Role name"
           required>
       </div>
         </div>
         </div>
       <div class="form-buttons">
         <button type="submit" class="btn btn-success" [disabled]="loading">
-          {{ loading ? 'Creating...' : 'Create ExoPlanet' }}
+          {{ loading ? 'Creating...' : 'Create Role' }}
         </button>
         <button type="button" (click)="toggleCreateForm()" class="btn btn-secondary" style="margin-left: 10px;">
           Cancel
@@ -54,19 +54,19 @@
       <div class="row" style="display: flex;">
         <div class="col-md-3">
       <div class="form-group">
-        <label style="font-size: large;">ExoPlanet Name *</label>
+        <label style="font-size: large;">Role Name *</label>
         <input class="form-control col-md-9"
           type="text" style="font-size: medium;"
-          [(ngModel)]="formData.exoPlanet_Name" 
-          name="exoPlanet_Name"
-          placeholder="Enter ExoPlanet name"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter Role name"
           required>
       </div>
      </div>
       </div>
       <div class="form-buttons">
         <button type="submit" class="btn btn-success" [disabled]="loading">
-          {{ loading ? 'Updating...' : 'Update ExoPlanet' }}
+          {{ loading ? 'Updating...' : 'Update Role' }}
         </button>
         <button type="button" (click)="cancelEdit()" class="btn btn-secondary" style="margin-left: 10px;">
           Cancel
@@ -75,19 +75,19 @@
     </form>
   </div>
 
-<div class="card" *ngIf="!loading && ExoPlanets.length > 0 && !showCreateForm && !editingId">
+<div class="card" *ngIf="!loading && roles.length > 0 && !showCreateForm && !editingId">
   <div class="card-body">
 <div class="table-responsive" style="max-height: 400px;width: 50%; max-width: 100%; overflow-y: visible;">
   <table class="table table-bordered table-hover align-middle">
     <thead class="table-dark sticky-top">
       <tr>
-        <th>ExoPlanet Name</th>
+        <th>Role Name</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let p of ExoPlanets">
-        <td>{{p.exoPlanet_Name}}</td>
+      <tr *ngFor="let p of roles">
+        <td>{{p.name}}</td>
         <td>
           <button
             class="btn btn-outline-success btn-sm me-1"
@@ -97,16 +97,16 @@
           </button>
           <button
             class="btn btn-outline-danger btn-sm"
-            (click)="deleteExoPlanet(p.id)"
+            (click)="deleteRole(p.id)"
             title="Delete"
           >  <i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>
       <!-- Empty State -->
-      <tr *ngIf="ExoPlanets.length === 0">
+      <tr *ngIf="roles.length === 0">
         <td colspan="5" class="text-center text-muted py-4">
-          No categories found
+          No Role found
         </td>
       </tr>
     </tbody>

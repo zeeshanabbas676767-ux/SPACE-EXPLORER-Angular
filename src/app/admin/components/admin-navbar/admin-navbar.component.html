@@ -1,105 +1,107 @@
-
-
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  
-   <!-- Topbar -->
   <div class="top-bar text-white py-2" style="width: 98.8%">
     <div class="container d-flex justify-content-between align-items-center">
-     <div style="margin-left: 400px;font-size: 20px;">
-              <button
-    class="btn btn-link nav-link position-relative"
-    type="button"
-    routerLink="/admin/dashboard"
-    
-  > 
-     <i class="mdi mdi-orbit" style="font-size: 30px;">SpaceExplorer</i>
-     <strong>Administrator</strong>
-  </button> 
-          
-    </div>
-    
-<!-- 
-					<div class="right-top-bar flex-w h-full">
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							Help & FAQs
-						</a>
+      <div style="margin-left: 400px; font-size: 20px;">
+        <button class="btn btn-link nav-link position-relative" type="button" routerLink="/admin/dashboard">
+          <i class="mdi mdi-orbit" style="font-size: 30px;">SpaceExplorer</i>
+          <strong>Administrator</strong>
+        </button>
+      </div>
+    </div> 
+  </div> 
 
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							My Account
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							EN
-						</a>
-
-						<a href="#" class="flex-c-m trans-04 p-lr-25">
-							USD
-						</a>
-					</div> -->
-    </div>
-  </div>
-
-   <!-- <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-start" style="margin-left: 470px;">
-  
-    <a class="navbar-brand brand-logo" href="../index.html"><img src="../assets/template-admin/images/logo.svg" alt="logo" /></a>
-    <a class="navbar-brand brand-logo-mini" href="../index.html"><img src="../assets/template-admin/images/logo-mini.svg" alt="logo" /></a>
-  </div>  -->
-  
   <div class="navbar-menu-wrapper d-flex align-items-stretch" style="margin-left: 20px;">
-    <!-- <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
-      <span class="mdi mdi-menu"></span>
-    </button> -->
-     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      				 <!-- Profile Dropdown -->
-             
-     <li>
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/dashboard">Dashboard</button>
-		</li>
-     <li>
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/products">Space Products</button>
-		</li>
-     <li>
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/category">Category</button>
-		</li>
-     <li>
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/orders">Orders</button>
-		</li>
-  
-     <li>
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/universeData">Universe Data</button>
-		</li>
-     <li>
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/users">Users</button>
-    </li>
-  <li style="margin-left: 20px;">
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      		 <!-- Profile Dropdown -->
+<li class="nav-item ms-3">
+
+  <!-- LOGGED IN -->
+  <ng-container *ngIf="isAdminLoggedIn">
+
+    
   <button
-    class="btn btn-link nav-link position-relative"
+    class="btn btn-primary"
     type="button"
     data-bs-toggle="offcanvas"
     data-bs-target="#offcanvasNavbar"
     aria-controls="offcanvasNavbar"
   >
-    <i class="mdi mdi-atom" style="font-size: 30px;"></i>
+    Profile
   </button>
-  
-		</li>
-     <li style="margin-left: 20px;">
-				<button class="btn btn-info" style="border-radius: 20px;" routerLink="/home">Back To Website</button>
-		</li>
-        
+
+    <!-- <a
+      class="nav-link d-flex align-items-center"
+      data-bs-toggle="dropdown"
+      href="#" 
+    >
+       <div 
+        class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
+        style="width: 36px; height: 36px; font-weight: bold;" title="{{user?.fullName}}"
+      >
+    <i class="fa fa-user"></i>
+
+        <strong style="font-size: 20px;">  {{ (user?.fullName) }}</strong> 
+        .slice(0, 2) || '').toUpperCase() 
+      </div> 
+      
+    </a>  -->
+
+    <div class="dropdown-menu dropdown-menu-end shadow p-0 mt-5" style="width: 250px;border-color: black;" (click)="$event.stopPropagation()">
+       <i class="fa fa-user-circle" style="font-size: 35px; margin-left: 93px;"></i>
+      <div class="text-center mb-2">
+        <strong>{{ user?.fullName }}</strong><br>
+        <small class="text-dark">{{ user?.email }}</small>
+      </div>
+
+      <div class="dropdown-divider"></div>
+
+      <button class="dropdown-item btn-gradient-danger text-dark" style="font-weight: 700;" (click)="logout();">
+        <i class="mdi mdi-logout me-2"></i> Logout
+      </button>
+    </div>
+
+  </ng-container>
+
+  <!-- NOT LOGGED IN --> 
+  <ng-container *ngIf="!isAdminLoggedIn">
+    <div class="d-flex gap-2">
+      <a routerLink="/admin/login" class="btn btn-success">Login</a>
+      <a routerLink="/admin/register" class="btn btn-primary">Register</a>
+    </div>
+  </ng-container>
+</li>
+
+      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/dashboard">Dashboard</button></li>
+      <!-- <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/products">Space Products</button></li> -->
+      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/spaceRoles">Space Roles</button></li>
+      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/role">Role</button></li>
+      <!-- <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/category">Category</button></li>
+      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/orders">Orders</button></li> -->
+      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/universeData">Universe Data</button></li>
+      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/users">Users</button></li>
+      
+      <li style="margin-left: 20px;">
+        <button class="btn btn-link nav-link position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
+          <i class="mdi mdi-atom" style="font-size: 30px;"></i>
+        </button>
+      </li>
+      <li style="margin-left: 20px;">
+        <button class="btn btn-info" style="border-radius: 20px;" routerLink="/home">Back To Website</button>
+      </li>
     </ul>
- </div>
+  </div>
 </nav>
 
 
-
-<div class="offcanvas offcanvas-end"
+<div class="offcanvas offcanvas-start"
      tabindex="-1"
      id="offcanvasNavbar"
      aria-labelledby="offcanvasNavbarLabel">
 
   <div class="offcanvas-header border-bottom">
-<h3>Data of Universe</h3>
+    <h3 class="offcanvas-title fw-bold" id="offcanvasNavbarLabel">
+      My profile 
+    </h3>
     <button type="button"
             class="btn-close"
             data-bs-dismiss="offcanvas"
@@ -108,35 +110,111 @@
 
   <div class="offcanvas-body p-0 d-flex flex-column">
 
-    <!-- EMPTY CART --> 
-    <div class="text-center p-4">
-      <button class="btn btn-dark mb-3 mb-3"
-              routerLink="/admin/planet"
-              data-bs-dismiss="offcanvas">
-        Planets
-      </button><br>
-       <button class="btn btn-dark mb-3"
-              routerLink="/admin/galaxy"
-              data-bs-dismiss="offcanvas">
-        Galaxies
-      </button><br>
-       <button class="btn btn-dark mb-3"
-              routerLink="/admin/moon"
-              data-bs-dismiss="offcanvas">
-        Moons
-      </button><br>
-       <button class="btn btn-dark mb-3"
-              routerLink="/admin/asteroid"
-              data-bs-dismiss="offcanvas">
-        Asteroids
-      </button><br>
-       <button class="btn btn-dark mb-3"
-              routerLink="/admin/exoPlanet"
-              data-bs-dismiss="offcanvas">
-       Exoplanets
+    <i class="fa fa-user" style="text-align: center;font-size: 50px;"></i>
+     <div class="text-center p-4">
+       <strong><h5 class="mb-3">{{user?.fullName}}</h5></strong>
+      <h6 class="mb-3">{{user?.email}}</h6>
+    </div>
+
+    <!-- FOOTER TOTAL + BUTTONS -->
+    <div  class="border-top p-3 mt-auto">
+
+  <button class="btn btn-danger w-100 mb-2" (click)="logout()">
+       Logout
       </button>
-      
     </div>
  
   </div>
 </div>
+
+
+
+
+<div class="offcanvas offcanvas-top h-auto" tabindex="-1" id="offcanvasTop" #offcanvasTop aria-labelledby="offcanvasTopLabel" style="min-height: 50vh;">
+  <div class="offcanvas-header border-bottom">
+    <h3 class="offcanvas-title" id="offcanvasTopLabel">Data of Universe</h3>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+
+  <div class="offcanvas-body p-4">
+    <div class="d-flex flex-row flex-wrap justify-content-center gap-2 mb-4">
+      <button *ngFor="let p of spaceRoles" 
+              type="button" 
+              class="btn"
+              [ngClass]="selectedRole?.id === p.id ? 'btn-primary' : 'btn-outline-dark'" 
+              (click)="selectRole(p)">
+        {{ p.name }}
+      </button>
+    </div>
+
+    <div *ngIf="selectedRole" class="card shadow-sm border-0 p-3">
+      
+      <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom">
+        <h4 class="m-0 fw-bold text-uppercase text-primary">{{ selectedRole.name }} Management</h4>
+        
+        <button *ngIf="!isFormOpen" class="btn btn-success btn-sm" (click)="openCreateForm()">
+          <i class="mdi mdi-plus"></i> Create New {{ selectedRole.name }}
+        </button>
+      </div>
+
+      <!-- Create / Edit Form -->
+      <div *ngIf="isFormOpen" class="bg-light p-3 rounded mb-3">
+        <h6 class="fw-bold">{{ isEditing ? 'Edit' : 'Create' }} {{ selectedRole.name }}</h6>
+       <!-- Form handles submission ONLY via (ngSubmit) -->
+<form (ngSubmit)="saveItem()">
+  <div class="mb-3">
+    <label class="form-label">{{ selectedRole.name }} Name</label>
+    <input 
+      type="text" 
+      class="form-control" 
+      [(ngModel)]="currentItem.name" 
+      name="roleItemName" 
+      [placeholder]="'Enter ' + selectedRole.name + ' name'" 
+      required>
+  </div>
+  <div class="d-flex gap-2">
+    <!-- DO NOT put (click)="saveItem()" on type="submit" -->
+    <button type="submit" class="btn btn-primary btn-sm">
+      {{ isEditing ? 'Update' : 'Save' }}
+    </button>
+    <button type="button" class="btn btn-secondary btn-sm" (click)="cancelForm()">
+      Cancel
+    </button>
+  </div>
+</form>
+      </div>
+
+      <!-- Data Table -->
+      <div *ngIf="!isFormOpen" class="table-responsive">
+        <table class="table table-hover align-middle border mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col" style="width: 10%;">#</th>
+              <th scope="col">{{ selectedRole.name }} Name</th>
+              <th scope="col" class="text-end" style="width: 25%;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of itemList; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td class="fw-semibold">{{ item.name }}</td>
+              <td class="text-end">
+                <button class="btn btn-sm btn-outline-warning me-2" (click)="editItem(item)">Edit</button>
+                <button class="btn btn-sm btn-outline-danger" (click)="deleteItem(item.id)">Delete</button>
+              </td>
+            </tr>
+            <tr *ngIf="itemList.length === 0">
+              <td colspan="3" class="text-center py-4 text-muted">
+                There are no {{ selectedRole.name }} items.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+

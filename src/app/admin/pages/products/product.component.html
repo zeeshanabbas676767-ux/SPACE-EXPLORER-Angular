@@ -101,6 +101,10 @@
       accept="image/*"
       (change)="onFileSelected($event)"
     />
+    <div *ngIf="previewUrl" class="d-flex align-items-center gap-2">
+        <img [src]="previewUrl" alt="Image preview" style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; border: 1px solid #fff;">
+        <strong style="color: white;">{{fileName}}</strong>
+      </div>
   </div>
 </div>
 
@@ -189,7 +193,9 @@
     <label style="font-size: large;">Image *</label>
 <!-- <img [src]="p.imageUrl" alt="{{ p.name }}" class="product-img"/> -->
 
-<img ngModel="imageUrl" class="product-img"/>
+<img [src]="previewUrl" alt="Image preview" class="product-img"
+style="width: 60px; height: 60px; object-fit: cover; 
+border-radius: 6px; border: 1px solid #fff;"/>
     <button
       type="button"
       class="btn btn-info btn-sm"

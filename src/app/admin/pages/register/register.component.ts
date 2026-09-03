@@ -9,11 +9,11 @@ import { AuthService } from '../../../shared/services/auth.service';
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.component.html',
 })
-export class RegisterComponent {
+export class AdminRegisterComponent {
   fullName = '';
   email = '';
   password = '';
-  roleId = 4;
+  roleId = 3;
   confirmPassword = '';
   error: string | null = null;
   loading = false;

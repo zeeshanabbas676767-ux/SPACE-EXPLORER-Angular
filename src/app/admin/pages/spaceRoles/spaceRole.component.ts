@@ -1,47 +1,45 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-// import { MoonService } from "../../../shared/services/Moon.service";
-import { Moon } from "../../../shared/models/moon.model";
+import { SpaceRolesService } from "../../../shared/services/spaceRoles.service";
+import { SpaceRoles } from "../../../shared/models/spaceRoles.model";
 import { FormsModule } from '@angular/forms';
-import { MoonService } from "../../../shared/services/moon.service";
 
 @Component({
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './moon.component.html'
+  templateUrl: './spaceRole.component.html'
 })
-export class AdminMoonComponent implements OnInit {
-    Moons: Moon[]= [];
+export class AdminSpaceRolesComponent implements OnInit {
+    roles: SpaceRoles[]= [];
   loading = false;
   error: string | null = null;
   // Form state
   showCreateForm = false;
   editingId: number | null = null;
   // Form model   
- formData: Moon={
+ formData: SpaceRoles={
   id: 0,
-  moon_Name: '',
-  spaceRoleId: 9
+  name: ''
  }
-
-  constructor(private MoonService: MoonService) {}
+ 
+  constructor(private SpaceRolesService: SpaceRolesService) {}
 
   ngOnInit(): void {
-    this.loadMoon();
+    this.loadSpaceRoles();
   }
 
-  loadMoon(): void {
+  loadSpaceRoles(): void {
     this.loading = true;
     this.error = null;
 
-    this.MoonService.getAll().subscribe({
+    this.SpaceRolesService.getAll().subscribe({
       next: (data) => {
-        this.Moons = data;
+        this.roles = data;
         this.loading = false;
       },
       error: (err: any) => {
-        const errorMessage = err?.error?.message || err?.message || 'Failed to load Moons. Please check if the API is running.';
-        this.error = `Error loading Moons: ${errorMessage}`;
+        const errorMessage = err?.error?.message || err?.message || 'Failed to load roles. Please check if the API is running.';
+        this.error = `Error loading roles: ${errorMessage}`;
         this.loading = false;
         console.error('Error calling API:', err);
       }
@@ -60,22 +58,22 @@ export class AdminMoonComponent implements OnInit {
   
    createProduct(): void {
   if (
-    !this.formData.moon_Name
+    !this.formData.name
   ) {
     this.error = 'Please fill all required fields';
     return;
   }
     this.loading = true;
-    this.MoonService.create(this.formData).subscribe({
+    this.SpaceRolesService.create(this.formData).subscribe({
       next: (newProduct) => {
-        this.Moons = [...this.Moons, newProduct];
+        this.roles = [...this.roles, newProduct];
         this.resetForm();
         this.showCreateForm = false;
         this.loading = false;
       },
       error: (err) => {
         console.error('Validation error:', err.error);
-        this.error = 'Failed to create Moons';
+        this.error = 'Failed to create roles';
         this.loading = false;
       }
     });
@@ -83,15 +81,15 @@ export class AdminMoonComponent implements OnInit {
   
   
       // UPDATE
-    startEdit(Moon: Moon): void {
-      this.editingId = Moon.id || null;
-      this.formData = { ...Moon };
+    startEdit(SpaceRoles: SpaceRoles): void {
+      this.editingId = SpaceRoles.id || null;
+      this.formData = { ...SpaceRoles };
       this.showCreateForm = false;
     }
   
     updateProduct(): void {
       if (!this.editingId) return;
-      if (!this.formData.moon_Name) {
+      if (!this.formData.name) {
         this.error = 'Please fill in all required fields (Name and Price > 0)';
         return;
       }
@@ -99,9 +97,9 @@ export class AdminMoonComponent implements OnInit {
       this.loading = true;
       this.error = null;
   
-      this.MoonService.update(this.editingId, this.formData).subscribe({
+      this.SpaceRolesService.update(this.editingId, this.formData).subscribe({
         next: (data) => {
-          this.Moons.findIndex(p => p.id === this.editingId)
+          this.roles.findIndex(p => p.id === this.editingId)
           
           // const index = this.products.findIndex(p => p.id === this.editingId);
           // if (index > -1) {
@@ -120,7 +118,7 @@ export class AdminMoonComponent implements OnInit {
           console.error('Error message:', err?.message);
           
           // Try to extract meaningful error message
-          let errorMessage = 'Failed to update Moons';
+          let errorMessage = 'Failed to update roles';
           if (err?.error?.message) {
             errorMessage = err.error.message;
           } else if (err?.error?.detail) {
@@ -131,21 +129,21 @@ export class AdminMoonComponent implements OnInit {
             errorMessage = err.message;
           }
           
-          this.error = `Error updating Moons (Status ${err?.status}): ${errorMessage}`;
+          this.error = `Error updating roles (Status ${err?.status}): ${errorMessage}`;
           this.loading = false;
-          console.error('Error updating Moons:', err);
+          console.error('Error updating roles:', err);
         }
       });
     }
   
-     deleteMoon(id: number): void {
-    if (!confirm('Are you sure you want to delete this Moon?')) {
+     deleteSpaceRoles(id: number): void {
+    if (!confirm('Are you sure you want to delete this SpaceRoles?')) {
       return;
     }
 
-    this.MoonService.delete(id).subscribe({
+    this.SpaceRolesService.delete(id).subscribe({
       next: () => {
-        this.Moons = this.Moons.filter(p => p.id !== id);
+        this.roles = this.roles.filter(p => p.id !== id);
       },
       error: (err) => {
         console.error(err);
@@ -158,8 +156,7 @@ export class AdminMoonComponent implements OnInit {
     resetForm(): void {
       this.formData = {
         id: 0,
-      moon_Name: '',
-      spaceRoleId: 9
+        name: ''
       };
       this.editingId = null;
     }

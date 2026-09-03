@@ -92,7 +92,7 @@
 								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/contact" routerLinkActive="active">Contact</button>
 							</li> -->
 
-							<li>
+							<li *ngIf="isAdminLoggedIn">
 								<button class="btn btn-primary" style="border-radius: 20px;" routerLink="/admin" routerLinkActive="active"> Admin</button>
 							</li>
             <li class="nav-item">
@@ -116,7 +116,7 @@
 <li class="nav-item ms-3">
 
   <!-- LOGGED IN -->
-  <ng-container *ngIf="user">
+  <ng-container *ngIf="isCustomerLoggedIn">
     <a
       class="nav-link d-flex align-items-center"
       data-bs-toggle="dropdown"
@@ -124,17 +124,20 @@
     >
       <div 
         class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
-        style="width: 36px; height: 36px; font-weight: bold;" title="{{user.fullName}}"
+        style="width: 36px; height: 36px; font-weight: bold;" title="{{currentUser?.fullName}}"
       >
-       <strong style="font-size: 20px;">  {{ (user.fullName.slice(0, 2) || '').toUpperCase() }}</strong>
+      <i class="fa fa-user"></i>
+       <!-- <strong style="font-size: 20px;">  {{ (currentUser?.fullName) }}</strong>  -->
+       <!-- .slice(0, 2) || '').toUpperCase() -->
       </div>
+     <strong style="margin-left: 10px;"> Hi, {{currentUser?.fullName}}</strong>
     </a> 
 
     <div class="dropdown-menu dropdown-menu-end shadow p-3" style="width: 250px;border-color: black;" (click)="$event.stopPropagation()">
        <i class="fa fa-user-circle" style="font-size: 35px; margin-left: 93px;"></i>
       <div class="text-center mb-2">
-        <strong>{{ user.fullName }}</strong><br>
-        <small class="text-dark">{{ user.email }}</small>
+        <strong>{{ currentUser?.fullName }}</strong><br>
+        <small class="text-dark">{{ currentUser?.email }}</small>
       </div>
 
       <div class="dropdown-divider"></div>
@@ -147,7 +150,7 @@
   </ng-container>
 
   <!-- NOT LOGGED IN --> 
-  <ng-container *ngIf="!user">
+  <ng-container *ngIf="!isCustomerLoggedIn">
     <div class="d-flex gap-2">
       <a routerLink="/login" class="btn btn-success">Login</a>
       <a routerLink="/register" class="btn btn-primary">Register</a>
