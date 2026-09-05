@@ -1,99 +1,126 @@
-<nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-  <div class="top-bar text-white py-2" style="width: 98.8%">
-    <div class="container d-flex justify-content-between align-items-center">
-      <div style="margin-left: 400px; font-size: 20px;">
-        <button class="btn btn-link nav-link position-relative" type="button" routerLink="/admin/dashboard">
-          <i class="mdi mdi-orbit" style="font-size: 30px;">SpaceExplorer</i>
-          <strong>Administrator</strong>
-        </button>
-      </div>
-    </div> 
-  </div> 
+<style>
+  /* Fix body overlap for fixed top navbar */
+body {
+  padding-top: 65px;
+}
 
-  <div class="navbar-menu-wrapper d-flex align-items-stretch" style="margin-left: 20px;">
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-      		 <!-- Profile Dropdown -->
-<li class="nav-item ms-3">
+/* Nav Links Styling */
+.navbar .nav-link {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border-radius: 6px;
+  transition: all 0.2s ease-in-out;
+}
 
-  <!-- LOGGED IN -->
-  <ng-container *ngIf="isAdminLoggedIn">
+.navbar .nav-link:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1);
+}
 
+/* Active Link Highlight */
+.navbar .nav-link.active {
+  color: #ffffff !important;
+  background-color: #0d6efd;
+  font-weight: 600;
+}
+
+/* Small custom badge styling */
+.fs-7 {
+  font-size: 0.65rem;
+  letter-spacing: 0.5px;
+  vertical-align: middle;
+}
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top border-bottom border-secondary shadow-sm px-3">
+  <div class="container-fluid">
     
-  <button
-    class="btn btn-primary"
-    type="button"
-    data-bs-toggle="offcanvas"
-    data-bs-target="#offcanvasNavbar"
-    aria-controls="offcanvasNavbar"
-  >
-    Profile
-  </button>
+    <!-- Logo / Brand -->
+    <a class="navbar-brand d-flex align-items-center me-4" routerLink="/admin/dashboard">
+      <i class="mdi mdi-orbit text-info fs-3 me-2"></i>
+      <span class="fw-bold text-white fs-5 tracking-wide">SpaceExplorer</span>
+      <span class="badge bg-primary ms-2 fs-7">ADMIN</span>
+    </a>
 
-    <!-- <a
-      class="nav-link d-flex align-items-center"
-      data-bs-toggle="dropdown"
-      href="#" 
-    >
-       <div 
-        class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
-        style="width: 36px; height: 36px; font-weight: bold;" title="{{user?.fullName}}"
-      >
-    <i class="fa fa-user"></i>
+    <!-- Mobile Menu Toggle Button -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-        <strong style="font-size: 20px;">  {{ (user?.fullName) }}</strong> 
-        .slice(0, 2) || '').toUpperCase() 
-      </div> 
-      
-    </a>  -->
+    <!-- Navigation items -->
+    <div class="collapse navbar-collapse" id="adminNavbarNav" style="margin-left: 100px;">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/products" routerLinkActive="active">Space Products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/spaceRoles" routerLinkActive="active">Space Roles</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/role" routerLinkActive="active">Role</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/category" routerLinkActive="active">Category</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/orders" routerLinkActive="active">Orders</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/universeData" routerLinkActive="active">Universe Data</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light px-2" routerLink="/admin/users" routerLinkActive="active">Users</a>
+        </li>
+      </ul>
 
-    <div class="dropdown-menu dropdown-menu-end shadow p-0 mt-5" style="width: 250px;border-color: black;" (click)="$event.stopPropagation()">
-       <i class="fa fa-user-circle" style="font-size: 35px; margin-left: 93px;"></i>
-      <div class="text-center mb-2">
-        <strong>{{ user?.fullName }}</strong><br>
-        <small class="text-dark">{{ user?.email }}</small>
+      <!-- Right Action Tools & Profile -->
+      <div class="d-flex align-items-center gap-2">
+        <button 
+          class="btn btn-outline-info rounded-circle d-flex align-items-center justify-content-center p-0" 
+          style="width: 38px; height: 38px;" 
+          type="button" 
+          data-bs-toggle="offcanvas" 
+          data-bs-target="#offcanvasTop" 
+          title="Data Drawer">
+          <i class="mdi mdi-atom fs-5"></i>
+        </button>
+
+        <a routerLink="/home" class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center p-0" style="width: 38px; height: 38px;" title="Back to Site">
+          <i class="fa fa-arrow-left fs-6"></i>
+        </a>
+
+        <div class="vr text-secondary mx-2 d-none d-lg-block" style="height: 24px;"></div>
+
+        <!-- Admin Profile -->
+        <ng-container *ngIf="isAdminLoggedIn; else authButtons">
+          <button 
+            class="btn btn-primary rounded-pill d-flex align-items-center px-3 gap-2" 
+            type="button" 
+            data-bs-toggle="offcanvas" 
+            data-bs-target="#offcanvasNavbar">
+            <i class="fa fa-user-circle fs-5"></i>
+            <span class="fw-semibold text-truncate" style="max-width: 120px;">{{ user?.fullName || 'Profile' }}</span>
+          </button>
+        </ng-container>
+
+        <ng-template #authButtons>
+          <div class="d-flex gap-2">
+            <a routerLink="/admin/login" class="btn btn-outline-success btn-sm">Login</a>
+            <a routerLink="/admin/register" class="btn btn-primary btn-sm">Register</a>
+          </div>
+        </ng-template>
       </div>
 
-      <div class="dropdown-divider"></div>
-
-      <button class="dropdown-item btn-gradient-danger text-dark" style="font-weight: 700;" (click)="logout();">
-        <i class="mdi mdi-logout me-2"></i> Logout
-      </button>
     </div>
-
-  </ng-container>
-
-  <!-- NOT LOGGED IN --> 
-  <ng-container *ngIf="!isAdminLoggedIn">
-    <div class="d-flex gap-2">
-      <a routerLink="/admin/login" class="btn btn-success">Login</a>
-      <a routerLink="/admin/register" class="btn btn-primary">Register</a>
-    </div>
-  </ng-container>
-</li>
-
-      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/dashboard">Dashboard</button></li>
-      <!-- <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/products">Space Products</button></li> -->
-      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/spaceRoles">Space Roles</button></li>
-      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/role">Role</button></li>
-      <!-- <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/category">Category</button></li>
-      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/orders">Orders</button></li> -->
-      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/universeData">Universe Data</button></li>
-      <li><button class="btn btn-info" style="border-radius: 20px;" routerLink="/admin/users">Users</button></li>
-      
-      <li style="margin-left: 20px;">
-        <button class="btn btn-link nav-link position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">
-          <i class="mdi mdi-atom" style="font-size: 30px;"></i>
-        </button>
-      </li>
-      <li style="margin-left: 20px;">
-        <button class="btn btn-info" style="border-radius: 20px;" routerLink="/home">Back To Website</button>
-      </li>
-    </ul>
   </div>
 </nav>
 
 
-<div class="offcanvas offcanvas-start"
+<div class="offcanvas offcanvas-end"
      tabindex="-1"
      id="offcanvasNavbar"
      aria-labelledby="offcanvasNavbarLabel">

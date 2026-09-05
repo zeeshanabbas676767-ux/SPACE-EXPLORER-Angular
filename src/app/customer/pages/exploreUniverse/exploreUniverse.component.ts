@@ -21,9 +21,10 @@ export class exploreUniverseComponent implements OnInit {
   searchTerm: string = '';
   minPrice?: number;
   maxPrice?: number;
+  
   pageNumber: number = 1;
   pageSize: number = 10;
-  totalPages: number = 0;
+  totalPages: number = 1;
   totalRecords: number = 0;
 
   constructor(
@@ -32,25 +33,41 @@ export class exploreUniverseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadProducts();
+    this.loadRoles();
+    this.loadPage(1);
   }
 
-  loadProducts(): void {
-    this.universeDataService.getAll(1, 1000, this.selectedSort)
-      .subscribe((response: any) => {
-        console.log('API Response:', response);
-        this.products = response.data;
-        this.filteredProducts = [...this.products];
-        this.totalRecords = response.total;
-        this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
+  // 1. Load permanent role buttons directly from SpaceRoles table
+  loadRoles(): void {
+    this.spaceRoleService.getAll().subscribe({
+      next: (data) => {
+        this.roles = data.map(r => r.name);
+      },
+      error: (err) => console.error('Error fetching categories:', err)
+    });
+  }
 
-        // Extract unique space role names (e.g., "Planet", "Moon", "Galaxy") for filter category buttons
-        this.roles = [...new Set(this.products
-          .map((p: any) => p.spaceRole?.name)
-          .filter((roleName: any): roleName is string => !!roleName))];
+  // 2. Fetch paginated space objects from API
+  loadPage(page: number): void {
+    this.universeDataService.getAll(page, this.pageSize).subscribe({
+      next: (res: any) => {
+        const allData: UniverseData[] = res.data || res;
+
+        // Filter out incomplete test records
+        this.products = allData.filter(item => 
+          item.description && 
+          item.description !== 'N/A' && 
+          (item.distanceFromEarth > 0 || item.radius > 0 || item.mass > 0)
+        );
+
+        this.totalRecords = res.total || this.products.length;
+        this.totalPages = Math.ceil(this.totalRecords / this.pageSize) || 1;
+        this.pageNumber = page;
 
         this.applyFilters();
-      });
+      },
+      error: (err) => console.error('Failed to load page:', err)
+    });
   }
 
   filterByroles(role: string): void {
@@ -67,13 +84,10 @@ export class exploreUniverseComponent implements OnInit {
     }
 
     // Filter by search term
-    const term = this.searchTerm.trim().toLowerCase();
+    const term = this.searchTerm?.trim().toLowerCase();
     if (term) {
       results = results.filter((p: any) => {
-        const searchableValues = [
-          p.name,
-          p.spaceRole?.name
-        ]
+        const searchableValues = [p.name, p.spaceRole?.name]
           .filter((value): value is string => !!value)
           .map(value => value.toString().toLowerCase());
 
@@ -81,13 +95,17 @@ export class exploreUniverseComponent implements OnInit {
       });
     }
 
-    // Filter by distance range
-    if (this.minPrice != null && this.maxPrice != null) {
-      results = results.filter(p => p.distanceFromEarth >= this.minPrice! && p.distanceFromEarth <= this.maxPrice!);
+    // Independent Distance Range Filtering
+    if (this.minPrice != null && this.minPrice > 0) {
+      results = results.filter(p => p.distanceFromEarth >= this.minPrice!);
+    }
+    if (this.maxPrice != null && this.maxPrice > 0) {
+      results = results.filter(p => p.distanceFromEarth <= this.maxPrice!);
     }
 
     this.filteredProducts = results;
 
+    // Apply Sorting
     if (this.selectedSort) {
       this.applySort(this.selectedSort);
     } else {
@@ -96,7 +114,6 @@ export class exploreUniverseComponent implements OnInit {
   }
 
   applyPriceFilter(min: number, max: number): void {
-    this.pageNumber = 1;
     this.minPrice = min;
     this.maxPrice = max;
     this.applyFilters();
@@ -115,7 +132,6 @@ export class exploreUniverseComponent implements OnInit {
   }
 
   onSortChange(sortValue: string): void {
-    this.pageNumber = 1;
     this.selectedSort = sortValue;
     this.applyFilters();
   }
@@ -126,26 +142,30 @@ export class exploreUniverseComponent implements OnInit {
   }
 
   resetFilters(): void {
-    this.pageNumber = 1;
     this.minPrice = undefined;
     this.maxPrice = undefined;
     this.selectedSort = '';
     this.searchTerm = '';
     this.activeroles = 'All';
-    this.loadProducts();
+    this.loadPage(1);
   }
 
+  // 3. Proper Pagination Navigation Triggers
   nextPage(): void {
     if (this.pageNumber < this.totalPages) {
-      this.pageNumber++;
-      this.loadProducts();
+      this.loadPage(this.pageNumber + 1);
     }
   }
 
   previousPage(): void {
     if (this.pageNumber > 1) {
-      this.pageNumber--;
-      this.loadProducts();
+      this.loadPage(this.pageNumber - 1);
+    }
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.loadPage(page);
     }
   }
 
@@ -155,12 +175,5 @@ export class exploreUniverseComponent implements OnInit {
       pages.push(i);
     }
     return pages;
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.pageNumber = page;
-      this.loadProducts();
-    }
   }
 }
