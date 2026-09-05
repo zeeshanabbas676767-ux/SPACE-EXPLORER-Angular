@@ -34,9 +34,10 @@ body {
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top border-bottom border-secondary shadow-sm px-3">
+
   <div class="container-fluid">
     
-    <!-- Logo / Brand -->
+   <!-- Logo / Brand -->
     <a class="navbar-brand d-flex align-items-center me-4" routerLink="/admin/dashboard">
       <i class="mdi mdi-orbit text-info fs-3 me-2"></i>
       <span class="fw-bold text-white fs-5 tracking-wide">SpaceExplorer</span>
@@ -44,19 +45,19 @@ body {
     </a>
 
     <!-- Mobile Menu Toggle Button -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarNav">
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbarNav">
       <span class="navbar-toggler-icon"></span>
-    </button>
+    </button> -->
 
     <!-- Navigation items -->
     <div class="collapse navbar-collapse" id="adminNavbarNav" style="margin-left: 100px;">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-1">
         <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
-        </li>
-        <!-- <li class="nav-item">
+        </li> 
+        <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/products" routerLinkActive="active">Space Products</a>
-        </li> -->
+        </li> 
         <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/spaceRoles" routerLinkActive="active">Space Roles</a>
         </li>
@@ -66,12 +67,12 @@ body {
         <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/role" routerLinkActive="active">Role</a>
         </li>
-        <!-- <li class="nav-item">
+        <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/category" routerLinkActive="active">Category</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/orders" routerLinkActive="active">Orders</a>
-        </li> -->
+        </li>
         <li class="nav-item">
           <a class="nav-link text-light px-2" routerLink="/admin/universeData" routerLinkActive="active">Universe Data</a>
         </li>
@@ -97,8 +98,7 @@ body {
             data-bs-toggle="offcanvas" 
             data-bs-target="#offcanvasNavbar">
             <i class="fa fa-user-circle fs-5"></i>
-            <span class="fw-semibold text-truncate" style="max-width: 120px;">{{ user?.fullName || 'Profile' }}</span>
-          </button>
+           </button>
         </ng-container>
 
         <ng-template #authButtons>
