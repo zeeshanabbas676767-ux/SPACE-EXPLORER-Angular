@@ -41,7 +41,7 @@ export class exploreUniverseComponent implements OnInit {
   loadRoles(): void {
     this.spaceRoleService.getAll().subscribe({
       next: (data) => {
-        this.roles = data.map(r => r.name);
+        this.roles = data.map(r => r.spaceRoleName);
       },
       error: (err) => console.error('Error fetching categories:', err)
     });
@@ -80,14 +80,14 @@ export class exploreUniverseComponent implements OnInit {
 
     // Filter by selected Space Role category
     if (this.activeroles !== 'All') {
-      results = results.filter((p: any) => p.spaceRole?.name === this.activeroles);
+      results = results.filter((p: any) => p.spaceRole?.spaceRoleName === this.activeroles);
     }
 
     // Filter by search term
     const term = this.searchTerm?.trim().toLowerCase();
     if (term) {
       results = results.filter((p: any) => {
-        const searchableValues = [p.name, p.spaceRole?.name]
+        const searchableValues = [p.name, p.spaceRole?.spaceRoleName]
           .filter((value): value is string => !!value)
           .map(value => value.toString().toLowerCase());
 

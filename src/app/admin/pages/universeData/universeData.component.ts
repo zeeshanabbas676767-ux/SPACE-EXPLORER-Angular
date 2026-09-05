@@ -5,6 +5,8 @@ import { UniverseData } from '../../../shared/models/universeData.models';
 import { UniverseDataService } from '../../../shared/services/universeData.service';
 import { SpaceRolesService } from '../../../shared/services/spaceRoles.service';
 import { SpaceRoles } from '../../../shared/models/spaceRoles.model';
+import { SpaceRolesItems } from '../../../shared/models/SpaceRoleItems.model';
+import { SpaceRolesItemsService } from '../../../shared/services/spaceRolesItems.service';
 
 @Component({
   selector: 'admin-UniverseData',
@@ -18,7 +20,7 @@ export class AdminUniverseDataComponent implements OnInit {
   roles: SpaceRoles[] = [];
   
   // Filtered list of items for secondary dropdown
-  roleObjects: UniverseData[] = [];
+  roleObjects: SpaceRolesItems[] = [];
 
   // Form Model
   inputData: any = {
@@ -54,7 +56,8 @@ export class AdminUniverseDataComponent implements OnInit {
 
   constructor(
     private universeDataService: UniverseDataService,
-    private spaceRoleService: SpaceRolesService
+    private spaceRoleService: SpaceRolesService,
+    private spaceRolesItemsService: SpaceRolesItemsService
   ) {}
 
   ngOnInit(): void {
@@ -78,13 +81,14 @@ onRoleChange(): void {
   this.inputData.name = '';
 
   const foundRole = this.roles.find(r => r.id === this.selectedSpaceRolesId);
-  this.selectedRoleName = foundRole ? foundRole.name : '';
+  this.selectedRoleName = foundRole ? foundRole.spaceRoleName : '';
 
   if (this.selectedSpaceRolesId) {
-    // Fetch objects matching selected category
-    this.universeDataService.getAll(1, 100).subscribe({
+    // 2. Call spaceRolesItemsService instead of universeDataService
+    this.spaceRolesItemsService.getAll().subscribe({
       next: (res: any) => {
-        const allItems: UniverseData[] = res.data || res;
+        const allItems: SpaceRolesItems[] = res.data || res;
+        // 3. Match against spaceRoleId (camelCase DTO property)
         this.roleObjects = allItems.filter(item => item.spaceRoleId === this.selectedSpaceRolesId);
       },
       error: (err) => console.error('Error fetching role items:', err)

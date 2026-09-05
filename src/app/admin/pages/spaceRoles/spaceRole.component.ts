@@ -19,7 +19,7 @@ export class AdminSpaceRolesComponent implements OnInit {
   // Form model   
  formData: SpaceRoles={
   id: 0,
-  name: ''
+  spaceRoleName: ''
  }
  
   constructor(private SpaceRolesService: SpaceRolesService) {}
@@ -58,7 +58,7 @@ export class AdminSpaceRolesComponent implements OnInit {
   
    createProduct(): void {
   if (
-    !this.formData.name
+    !this.formData.spaceRoleName
   ) {
     this.error = 'Please fill all required fields';
     return;
@@ -89,8 +89,8 @@ export class AdminSpaceRolesComponent implements OnInit {
   
     updateProduct(): void {
       if (!this.editingId) return;
-      if (!this.formData.name) {
-        this.error = 'Please fill in all required fields (Name and Price > 0)';
+      if (!this.formData.spaceRoleName) {
+        this.error = 'Please fill in all required fields (Space Role Name)';
         return;
       }
   
@@ -156,7 +156,7 @@ export class AdminSpaceRolesComponent implements OnInit {
     resetForm(): void {
       this.formData = {
         id: 0,
-        name: ''
+        spaceRoleName: ''
       };
       this.editingId = null;
     }

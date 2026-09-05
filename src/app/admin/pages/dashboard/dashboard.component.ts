@@ -9,11 +9,12 @@ import { SpaceRolesService } from '../../../shared/services/spaceRoles.service';
 import { UniverseDataService } from '../../../shared/services/universeData.service';
 import { exploreUniverseService } from '../../../shared/services/exploreUniverse.service';
 import { AuthService } from '../../../shared/services/auth.service';
+import { SpaceRolesItemsService } from '../../../shared/services/spaceRolesItems.service';
 
 Chart.register(...registerables);
 
 export interface SpaceRoleSummary {
-  name: string;
+  spaceRoleName: string;
   count: number;
 }
 
@@ -45,7 +46,8 @@ export class AdminDashboardComponent implements OnInit {
     private spaceRolesService: SpaceRolesService,
     private universeDataService: UniverseDataService,
     private exploreUniverseService: exploreUniverseService,
-    private AuthService: AuthService
+    private AuthService: AuthService,
+    private spaceRoleItemsService: SpaceRolesItemsService
   ) {}
 
   ngOnInit(): void {
@@ -58,6 +60,7 @@ export class AdminDashboardComponent implements OnInit {
     forkJoin({
       products: this.exploreUniverseService.getAll('1', '1000'),
       categories: this.categoryService.getAll(),
+      roleItems: this.spaceRoleItemsService.getAll(),
       orders: this.orderService.getOrders(),
       roles: this.spaceRolesService.getAll(),
       universeData: this.universeDataService.getAll(1, 1000),
@@ -76,6 +79,9 @@ export class AdminDashboardComponent implements OnInit {
         const rolesList: any[] = res.roles?.data || res.roles || [];
         this.totalSpaceRoles = rolesList.length;
 
+      const rawRoleItems = res.roleItems?.data || res.roleItems || [];
+      const roleItemsList: any[] = Array.isArray(rawRoleItems) ? rawRoleItems : [];
+
         const universeList: any[] = res.universeData?.data || res.universeData || [];
         this.totalUniverseObjects = universeList.length;
 
@@ -83,16 +89,18 @@ export class AdminDashboardComponent implements OnInit {
         const usersList = res.users?.data || res.users || [];
         this.totalUsers = Array.isArray(usersList) ? usersList.length : 0;
 
-        // COMPLETELY DECOUPLED FROM UNIVERSE DATA:
-        // Counts how many Categories belong to each Space Role instead of reading Universe Data rows!
-        this.roleSummaries = rolesList.map((role: any) => {
-          const count = categoriesList.filter((c: any) => 
-            c.spaceRoleId === role.id || c.roleId === role.id || c.spaceRoleName === role.name
-          ).length;
+     this.roleSummaries = rolesList.map((role: any) => {
+        const count = roleItemsList.filter((item: any) => {
+          // Check camelCase (spaceRoleId), PascalCase (SpaceRoleId), or string name matching
+          const itemRoleId = item.spaceRoleId ?? item.SpaceRoleId ?? item.spaceRolesId;
+          return Number(itemRoleId) === Number(role.id);
+        }).length;
 
-          // Fallback: If your categories aren't linked to roles, give each distinct role a base count of 1
-          return { name: role.name, count: count > 0 ? count : 1 };
-        });
+        return { 
+          spaceRoleName: role.spaceRoleName, 
+          count: count 
+        };
+      });
 
         this.isLoading = false;
         setTimeout(() => this.renderChart(), 100);
@@ -112,7 +120,7 @@ export class AdminDashboardComponent implements OnInit {
       this.chartInstance.destroy();
     }
 
-    const labels = this.roleSummaries.map(r => r.name);
+    const labels = this.roleSummaries.map(r => r.spaceRoleName);
     const data = this.roleSummaries.map(r => r.count);
 
     this.chartInstance = new Chart(this.roleChartRef.nativeElement, {

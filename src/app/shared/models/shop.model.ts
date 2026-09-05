@@ -8,4 +8,4 @@ categoryId: number;
  imageUrl?: string;
 stock: number;
 createdAt: string;
-}
+} 

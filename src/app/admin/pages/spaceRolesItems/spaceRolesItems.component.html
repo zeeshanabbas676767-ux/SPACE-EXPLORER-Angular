@@ -1,7 +1,16 @@
 
+<style>
+
+  button.btn:disabled {
+  cursor: not-allowed !important;
+  pointer-events: all;
+}
+
+</style>
+
 <div class="card mt-5">
 <div class="card-body mt-5">
-  <h1 class="text-center">Space Roles Management</h1>
+  <h1 class="text-center">SpaceRolesItems Management</h1>
 
   <!-- Create Button -->
   <div class="button-group">
@@ -9,7 +18,7 @@
       *ngIf="!showCreateForm && !editingId" 
       (click)="toggleCreateForm()"
       class="btn btn-dark">
-      + Create New Space Roles
+      + Create New Space Role Item
     </button>
   </div>
   <!-- Error State -->
@@ -26,22 +35,39 @@
     <form (ngSubmit)="createProduct()" class="product-form">
     <div class="row" style="display: flex;">
         <div class="col-md-3">
+           <div class="form-group">
+          <label style="font-size: large;">Select Space Role *</label>
+       <select class="form-control  col-md-9"  style="font-size: medium;"
+    [(ngModel)]="formData.spaceRolesId"
+    name="spaceRolesId" [ariaPlaceholder]=""
+    required>
+   <option [ngValue]="" disabled selected> Select Space Role </option>
+    <option *ngFor="let c of spaceRoles" [value]="c.id">
+      {{ c.spaceRoleName }}
+    </option>
+  </select>
+  </div>
+  </div>
+
+        <div class="col-md-3">
       <div class="form-group">
-        <label style="font-size: large;">Space Roles Name *</label>
+        <label style="font-size: large;">Space Role Item Name *</label>
         <input class="form-control col-md-9"
-          type="text" style="font-size: medium;"
-          [(ngModel)]="formData.spaceRoleName" 
-          name="spaceRoleName"
-          placeholder="Enter Space Roles name"
+          type="text"  style="font-size: medium;"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter space role item name"
           required>
       </div>
         </div>
+
+
         </div>
       <div class="form-buttons">
-        <button type="submit" class="btn btn-success" [disabled]="loading">
-          {{ loading ? 'Creating...' : 'Create Space Roles' }}
+        <button type="submit" class="btn btn-dark" [disabled]="loading">
+          {{ loading ? 'Creating...' : 'Create Space Role Item' }}
         </button>
-        <button type="button" (click)="toggleCreateForm()" class="btn btn-secondary" style="margin-left: 10px;">
+        <button type="button" (click)="toggleCreateForm()" class="btn btn-secondary"  style="margin-left: 10px;">
           Cancel
         </button>
       </div>
@@ -54,41 +80,45 @@
       <div class="row" style="display: flex;">
         <div class="col-md-3">
       <div class="form-group">
-        <label style="font-size: large;">Space Roles Name *</label>
+        <label style="font-size: large;">Space Role Item Name *</label>
         <input class="form-control col-md-9"
-          type="text" style="font-size: medium;"
-          [(ngModel)]="formData.spaceRoleName" 
-          name="spaceRoleName"
-          placeholder="Enter Space Roles name"
+          type="text"  style="font-size: medium;"
+          [(ngModel)]="formData.name" 
+          name="name"
+          placeholder="Enter space role item name"
           required>
       </div>
      </div>
+    
       </div>
       <div class="form-buttons">
         <button type="submit" class="btn btn-success" [disabled]="loading">
-          {{ loading ? 'Updating...' : 'Update Space Roles' }}
+          {{ loading ? 'Updating...' : 'Update Space Role Item' }}
         </button>
-        <button type="button" (click)="cancelEdit()" class="btn btn-secondary" style="margin-left: 10px;">
+        <button type="button" (click)="cancelEdit()" class="btn btn-secondary"  style="margin-left: 10px;">
           Cancel
         </button>
       </div>
     </form>
   </div>
 
-<div class="card" *ngIf="!loading && roles.length > 0 && !showCreateForm && !editingId">
+
+<div class="card" *ngIf="!loading && items.length > 0 && !showCreateForm && !editingId">
   <div class="card-body">
-<div class="table-responsive" style="max-height: 400px;width: 50%; max-width: 100%; overflow-y: visible;">
-  <table class="table table-bordered table-hover align-middle">
+<div class="table-responsive" style="max-height: 400px; overflow-y: visible;">
+  <table class="table table-bordered table-hover align-middle txt-center">
     <thead class="table-dark sticky-top">
       <tr>
-        <th>Space Roles Name</th>
+        <th>Name</th>
+        <th>Space Role</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let p of roles">
-        <td>{{p.spaceRoleName}}</td>
-        <td>
+      <tr *ngFor="let p of items">
+        <td> {{ p.name }}</td>
+        <td> {{ p.spaceRole_Name }}</td>
+        <td> 
           <button
             class="btn btn-outline-success btn-sm me-1"
             (click)="startEdit(p)"
@@ -97,16 +127,16 @@
           </button>
           <button
             class="btn btn-outline-danger btn-sm"
-            (click)="deleteSpaceRoles(p.id)"
+            (click)="deleteProduct(p.id)"
             title="Delete"
           >  <i class="fa fa-trash"></i>
           </button>
         </td>
       </tr>
       <!-- Empty State -->
-      <tr *ngIf="roles.length === 0">
+      <tr *ngIf="items.length === 0">
         <td colspan="5" class="text-center text-muted py-4">
-          No space roles found
+          No Space Roles Items found
         </td>
       </tr>
     </tbody>
@@ -114,5 +144,6 @@
 </div>
 
   </div>
+</div>
 </div>
 </div>

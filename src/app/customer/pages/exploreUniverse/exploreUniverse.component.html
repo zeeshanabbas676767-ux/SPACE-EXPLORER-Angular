@@ -192,7 +192,7 @@
           <div class="product-info">
             <h6>
               <!-- Displays Space Role Name followed by Object Name (e.g., Planet: Earth) -->
-              <strong>{{ product.spaceRole?.name ? product.spaceRole?.name : 'Object' }}: {{ product.name }}</strong>
+              <strong>{{ product.spaceRole?.spaceRoleName ? product.spaceRole?.spaceRoleName : 'Object' }}: {{ product.name }}</strong>
             </h6>
             <p class="price">Distance from Earth: {{ product.distanceFromEarth }}</p>
             <p class="price">Mass: {{ product.mass }}</p>

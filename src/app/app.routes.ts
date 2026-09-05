@@ -23,6 +23,7 @@ import { AdminRoleComponent } from './admin/pages/Role/Role.component';
 import { AdminRegisterComponent } from './admin/pages/register/register.component';
 import { AdminLoginComponent } from './admin/pages/login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AdminSpaceRolesItemsComponent } from './admin/pages/spaceRolesItems/spaceRolesItems.component';
 //import { AdminGuard } from './guards/auth.guard';
 //import { AuthGuard } from './guards/auth.guard';
 
@@ -67,6 +68,7 @@ export const routes: Routes = [
     { path: 'users', component: AdminUsersComponent},
     {path: 'universeData', component: AdminUniverseDataComponent},
     {path: 'spaceRoles', component: AdminSpaceRolesComponent},
+    {path: 'spaceRolesitems', component: AdminSpaceRolesItemsComponent},
     {path: 'role', component: AdminRoleComponent},
      { path: 'register', component: AdminRegisterComponent},
       { path: 'login', component: AdminLoginComponent},
