@@ -1,4 +1,4 @@
 export interface SpaceRoles {
   id: number;
-  saceRoleName: string;
+  spaceRoleName: string;
 }
