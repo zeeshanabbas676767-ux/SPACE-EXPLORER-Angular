@@ -13,7 +13,7 @@ export class AdminRegisterComponent {
   fullName = '';
   email = '';
   password = '';
-  roleId = 3;
+  roleId = 1;
   confirmPassword = '';
   error: string | null = null;
   loading = false;

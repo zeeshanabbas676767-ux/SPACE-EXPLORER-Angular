@@ -53,11 +53,11 @@ export class AdminNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
     get isCustomerLoggedIn(): boolean {
     
-    return this.user?.roleId === 4;
+    return this.user?.roleId === 2;
   }
 
   get isAdminLoggedIn(): boolean {
-    return this.user?.roleId === 3;
+    return this.user?.roleId === 1;
   }
 
   logout() {

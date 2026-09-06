@@ -13,7 +13,7 @@ import { RouterLink } from "@angular/router";
 export class LoginComponent {
   email = '';
   password = '';
-  roleId = 4;
+  roleId = 2;
   error: string | null = null;
  loading = false;
   showPassword = false;

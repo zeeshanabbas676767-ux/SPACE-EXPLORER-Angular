@@ -49,11 +49,11 @@ ngOnInit(): void {
 
   get isCustomerLoggedIn(): boolean {
     
-    return this.currentUser?.roleId === 4;
+    return this.currentUser?.roleId === 2;
   }
 
   get isAdminLoggedIn(): boolean {
-    return this.currentUser?.roleId === 3;
+    return this.currentUser?.roleId === 1;
   }
 
 logout() {

@@ -13,7 +13,7 @@ export class RegisterComponent {
   fullName = '';
   email = '';
   password = '';
-  roleId = 4;
+  roleId = 2;
   confirmPassword = '';
   error: string | null = null;
   loading = false;

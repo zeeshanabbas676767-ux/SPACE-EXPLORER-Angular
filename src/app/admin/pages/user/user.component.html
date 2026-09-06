@@ -29,8 +29,8 @@
         <td>{{p.fullName}}</td>
         <!-- this.role.find(r => r.id === p.roleId)?.name -->
          <td>{{p.email}}</td>
-         <th *ngIf="p.roleId === 3">Admin</th>
-          <th *ngIf="p.roleId === 4">Customer</th> 
+         <th *ngIf="p.roleId === 1">Admin</th>
+          <th *ngIf="p.roleId === 2">Customer</th> 
         <td>
           <button 
             class="btn btn-outline-danger btn-sm"

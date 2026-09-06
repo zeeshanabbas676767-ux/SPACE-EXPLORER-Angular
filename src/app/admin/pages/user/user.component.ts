@@ -30,8 +30,8 @@ error: string | null = null;
     this.loadUser();
     this.loadRole();
        this.role = [
-    { id: 3, name: 'Admin' },
-    { id: 4, name: 'Customer' },
+    { id: 1, name: 'Admin' },
+    { id: 2, name: 'Customer' },
   ];
   } 
 
