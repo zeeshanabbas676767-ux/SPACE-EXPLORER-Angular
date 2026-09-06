@@ -80,11 +80,11 @@ export class exploreUniverseComponent implements OnInit {
 
     // Filter by selected Space Role category
     if (this.activeroles !== 'All') {
-      results = results.filter((p: any) => p.spaceRole?.spaceRoleName === this.activeroles);
+      results = results.filter((p: any) => p.spaceRole?.spaceRole_Name === this.activeroles);
     }
 
     // Filter by search term
-    const term = this.searchTerm?.trim().toLowerCase();
+    const term = this.searchTerm?.trim().toLowerCase(); 
     if (term) {
       results = results.filter((p: any) => {
         const searchableValues = [p.name, p.spaceRole?.spaceRoleName]
