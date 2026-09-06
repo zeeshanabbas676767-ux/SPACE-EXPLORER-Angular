@@ -30,8 +30,8 @@
         <label style="font-size: large;">Space Roles Name *</label>
         <input class="form-control col-md-9"
           type="text" style="font-size: medium;"
-          [(ngModel)]="formData.saceRoleName" 
-          name="saceRoleName"
+          [(ngModel)]="formData.spaceRoleName" 
+          name="spaceRoleName"
           placeholder="Enter Space Roles name"
           required>
       </div>
@@ -87,7 +87,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let p of roles">
-        <td>{{p.saceRoleName}}</td>
+        <td>{{p.spaceRoleName}}</td>
         <td>
           <button
             class="btn btn-outline-success btn-sm me-1"
