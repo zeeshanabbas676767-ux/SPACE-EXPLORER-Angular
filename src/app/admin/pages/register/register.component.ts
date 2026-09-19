@@ -21,6 +21,11 @@ export class AdminRegisterComponent {
   showPassword = false;
   showConfirmPassword = false;
 
+  get hasShortPassword(): boolean {
+    return (this.password.length > 0 && this.password.length < 7)
+      || (this.confirmPassword.length > 0 && this.confirmPassword.length < 7);
+  }
+
   constructor(private auth: AuthService, private router: Router) {}
 
   togglePassword(): void {
@@ -39,8 +44,8 @@ export class AdminRegisterComponent {
       return;
     }
 
-    if (this.password.length < 6) {
-      this.error = 'Password must be at least 6 characters.';
+    if (this.password.length < 7 || this.confirmPassword.length < 7) {
+      this.error = 'Password must be at least 7 characters.';
       return;
     }
 

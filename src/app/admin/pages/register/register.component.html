@@ -65,9 +65,10 @@
           name="password"
             placeholder="Enter Password" style="font-size: medium;"
            [type]="showPassword ? 'text' : 'password'"  
+          [class.is-invalid]="hasShortPassword"
           [(ngModel)]="password"
           required
-          minlength="6"
+          minlength="7"
         />
 
         <button
@@ -83,8 +84,6 @@
     <!-- Confirm Password -->
     <div class="mb-3"> 
       <label class="dis-flex">Confirm Password 
-        <strong *ngIf="password != confirmPassword"
-        style="margin-left: 10px;color: red;"> Both Passwords should be same </strong>
       </label>
       <div class="input-group" >
         <input 
@@ -92,8 +91,10 @@
            [type]="showConfirmPassword ? 'text' : 'password'" 
           name="confirmPassword"
             placeholder="Enter Confirm Password" style="font-size: medium;"
+          [class.is-invalid]="hasShortPassword"
           [(ngModel)]="confirmPassword"
           required
+          minlength="7"
         />
          <button
           type="button"
@@ -103,12 +104,18 @@
           <i class="fa fa-eye"></i> 
         </button>
       </div>
+      <div *ngIf="hasShortPassword" class="invalid-feedback d-block">
+       <strong>❌ Password must be at least 7 characters long</strong>
+      </div>
+    <div *ngIf="password !== confirmPassword && confirmPassword.length > 0" class="invalid-feedback d-block">
+        <strong>❌ Passwords do not match</strong>
+      </div>
     </div> 
 
       <button
       type="submit"
       class="btn btn-primary w-100"
-      [disabled]="!email || !fullName || !password || !confirmPassword || password != confirmPassword"
+      [disabled]="!email || !fullName || !password || !confirmPassword || password != confirmPassword || password.length < 7 || confirmPassword.length < 7"
     >
       Register
     </button>
