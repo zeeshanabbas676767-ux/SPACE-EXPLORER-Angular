@@ -1,114 +1,45 @@
-// auth.interceptor.ts
-import { HttpRequest, HttpHandlerFn, HttpEvent } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { catchError, throwError } from 'rxjs';
 
-export function authInterceptor(req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> {
+export const authInterceptor: HttpInterceptorFn = (req, next) => {
+  const router = inject(Router);
+  let token: string | null = localStorage.getItem('token');
 
-  const token = localStorage.getItem('token');
-  if (token) {
-    req = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
+  // Fallback: Check inside user object
+  if (!token) {
+    const userJson = localStorage.getItem('user');
+    if (userJson) {
+      try {
+        const userObj = JSON.parse(userJson);
+        token = typeof userObj?.token === 'string' ? userObj.token : userObj?.token?.token || null;
+      } catch (e) {
+        console.error('Error parsing user object from localStorage:', e);
       }
-    });
+    }
   }
-  return next(req);
-}
 
+  let authReq = req;
 
-// import { HttpInterceptorFn } from '@angular/common/http';
+  if (token && typeof token === 'string') {
+    const cleanToken = token.replace(/^"(.*)"$/, '$1').trim();
+    if (cleanToken && cleanToken.includes('.')) {
+      authReq = req.clone({
+        headers: req.headers.set('Authorization', `Bearer ${cleanToken}`)
+      });
+    }
+  }
 
-// export const authInterceptor: HttpInterceptorFn = (req, next) => {
-
-//   const token = localStorage.getItem('token');
-
-//   if (token) {
-//     const authReq = req.clone({
-//       setHeaders: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-
-//     console.log('✅ Token attached:', token);
-//     return next(authReq);
-//   }
-
-//   console.log('⚠️ No token found for request:', req.url);
-//   return next(req);
-// };
-
-
-// import { Injectable } from '@angular/core';
-// import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-
-// @Injectable()
-// export class AuthInterceptor implements HttpInterceptor {
-// intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-
-//   // Skip auth endpoints
-//   if (req.url.includes('/api/auth/login') || req.url.includes('/api/auth/register')) {
-//     return next.handle(req);
-//   }
-
-//   const token = localStorage.getItem('token');
-
-//   // Diagnostic logging to confirm token/header
-//   try {
-//     console.debug('[AuthInterceptor] request url:', req.url);
-//     console.debug('[AuthInterceptor] stored token present:', !!token);
-//   } catch (e) {
-//     // ignore
-//   }
-
-//   if (token) {
-//     const authReq = req.clone({
-//       setHeaders: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-//     // Also log exact header being sent (debug only)
-//     try { console.debug('[AuthInterceptor] sending Authorization header:', `Bearer ${token?.substring(0,20)}...`); } catch {}
-//     return next.handle(authReq);
-//   }
-
-//   // No token - continue without header (server will respond 401)
-//   console.warn('No authentication token available. Request sent without Authorization header');
-//   return next.handle(req);
-// }
-
-// }
-
-
-
-// auth.interceptor.ts
-// import { HttpRequest, HttpHandlerFn, HttpEvent, HttpInterceptorFn } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-
-// export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<any>, next: HttpHandlerFn): Observable<HttpEvent<any>> => {
-//   const token = localStorage.getItem('token');
-//   if (token) {
-//     const cloned = req.clone({
-//       setHeaders: { Authorization: `Bearer ${token}` }
-//     });
-//     return next(cloned);
-//   }
-//   return next(req);
-// };
-
-// import { HttpInterceptorFn } from '@angular/common/http';
-
-// export const authInterceptor: HttpInterceptorFn = (req, next) => {
-
-//   const token = localStorage.getItem('token');
-
-//   if (token) {
-//     req = req.clone({
-//       setHeaders: {
-//         Authorization: `Bearer ${token}`
-//       }
-//     });
-//   }
-
-//   return next(req);
-// };
+  return next(authReq).pipe(
+    catchError((error: HttpErrorResponse) => {
+      if (error.status === 401) {
+        console.warn('Unauthorized request (401). Clearing stored session...');
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        router.navigate(['/login']);
+      }
+      return throwError(() => error);
+    })
+  );
+};

@@ -13,7 +13,6 @@ export class RegisterComponent {
   fullName = '';
   email = '';
   password = '';
-  roleId = 2;
   confirmPassword = '';
   error: string | null = null;
   loading = false;
@@ -29,14 +28,6 @@ export class RegisterComponent {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  onRegister(): void {
-    this.error = '';
-
-        if (this.password !== this.confirmPassword) {
-      this.error = 'Passwords do not match';
-      return;
-    }
-  }
 
   submit() {
     this.error = null;
@@ -57,7 +48,6 @@ export class RegisterComponent {
       fullName: this.fullName,
       email: this.email,
       password: this.password,
-      roleId: this.roleId
     }).subscribe({
       next: () => {
         this.loading = false;

@@ -8,6 +8,7 @@ import { AuthService } from '../../../shared/services/auth.service';
 import { OrderService } from '../../../shared/services/order.service';
 import { Users } from '../../../shared/models/users.model';
 import { Role } from '../../../shared/models/role.model';
+import { AuthResponse } from '../../../shared/models/auth-Responce';
 @Component({
   selector: 'app-navbar',
   standalone: true,
@@ -20,9 +21,9 @@ cartCount = 0;
 isFixed = false; 
   total = 0;
   isLoggedIn = false;
-
+isAdminLoggedIn = false;
    role: Role | null = null;
-    currentUser: Users | null = null;
+    currentUser: AuthResponse | null = null;
 
 constructor (private auth: AuthService,
   private cartService: CartService,
@@ -37,6 +38,8 @@ ngOnInit(): void {
     
      this.auth.user$.subscribe(user => {
       this.currentUser = user;
+      this.isLoggedIn = !!user;
+      this.isAdminLoggedIn = user?.role === 'Admin';
     });
 
        this.cartService.cart$.subscribe(items => {
@@ -49,31 +52,17 @@ ngOnInit(): void {
 
   get isCustomerLoggedIn(): boolean {
     
-    return this.currentUser?.roleId === 2;
+    return this.currentUser?.role === 'Customer';
   }
 
-  get isAdminLoggedIn(): boolean {
-    return this.currentUser?.roleId === 1;
-  }
+
 
 logout() {
   this.auth.logout();
   this.router.navigate(['/login']);
 }
-  //   goToLogin() {
-  //   this.router.navigate(['/login']);
-  // }
-
-  // goToRegister() {
-  //   this.router.navigate(['/register']);
-  // }
 
   createOrder() {
-  // if (this.cartItems.length === 0) {
-  //   alert('Cart is empty');
-  //   return;
-  // }
-
   const orderDto = {
     items: this.cartItems.map(item => ({
       productId: item.product.id,

@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
 
 @Component({
+  selector: 'app-admin-register',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.component.html',
@@ -13,15 +14,16 @@ export class AdminRegisterComponent {
   fullName = '';
   email = '';
   password = '';
-  roleId = 1;
   confirmPassword = '';
+  
   error: string | null = null;
   loading = false;
   showPassword = false;
   showConfirmPassword = false;
 
   constructor(private auth: AuthService, private router: Router) {}
-   togglePassword(): void {
+
+  togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
 
@@ -29,44 +31,41 @@ export class AdminRegisterComponent {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
 
-  onRegister(): void {
-    this.error = '';
-
-        if (this.password !== this.confirmPassword) {
-      this.error = 'Passwords do not match';
-      return;
-    }
-  }
-
-  submit() {
+  submit(): void {
     this.error = null;
 
     if (!this.fullName || !this.email || !this.password) {
-      this.error = 'All fields are required';
+      this.error = 'All fields are required.';
+      return;
+    }
+
+    if (this.password.length < 6) {
+      this.error = 'Password must be at least 6 characters.';
       return;
     }
 
     if (this.password !== this.confirmPassword) {
-      this.error = 'Passwords do not match';
+      this.error = 'Passwords do not match.';
       return;
     }
 
     this.loading = true;
 
-    this.auth.register({
+    // Payload strictly matches C# RegisterDto (FullName, Email, Password)
+    this.auth.RegisterAdmin({
       fullName: this.fullName,
       email: this.email,
-      password: this.password,
-      roleId: this.roleId
+      password: this.password
     }).subscribe({
       next: () => {
         this.loading = false;
-        this.router.navigate(['/home']);
+        // Redirect directly to admin dashboard upon success
+        this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
         this.loading = false;
-        this.error = err?.error?.message || 'Registration failed';
-        console.error('Register error', err);
+        this.error = err?.error?.message || 'Registration failed. Please try again.';
+        console.error('Register error:', err);
       }
     });
   }

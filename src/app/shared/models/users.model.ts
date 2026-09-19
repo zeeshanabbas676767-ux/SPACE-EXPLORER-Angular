@@ -6,5 +6,5 @@ export interface Users{
     email: string,
     totalOrders: number;
     roleId: number;
-    role: Role
+    roleName?: string; 
 }

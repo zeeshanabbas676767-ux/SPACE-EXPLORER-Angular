@@ -13,7 +13,6 @@ import { RouterLink } from "@angular/router";
 export class LoginComponent {
   email = '';
   password = '';
-  roleId = 2;
   error: string | null = null;
  loading = false;
   showPassword = false;
@@ -31,7 +30,7 @@ export class LoginComponent {
     }
 
     this.loading = true;
-    this.auth.login({ email: this.email, password: this.password, roleId: this.roleId }).subscribe({
+    this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {
         this.loading = false;
        

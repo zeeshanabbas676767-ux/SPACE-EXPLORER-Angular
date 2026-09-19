@@ -116,7 +116,7 @@
 <li class="nav-item ms-3">
 
   <!-- LOGGED IN -->
-  <ng-container *ngIf="isCustomerLoggedIn">
+  <ng-container *ngIf="isLoggedIn">
     <a
       class="nav-link d-flex align-items-center"
       data-bs-toggle="dropdown"
@@ -124,8 +124,8 @@
     >
       <div 
         class="rounded-circle bg-dark text-white d-flex justify-content-center align-items-center"
-        style="width: 36px; height: 36px; font-weight: bold;" title="{{currentUser?.fullName}}"
-      >
+        style="width: 36px; height: 36px; font-weight: bold;" title="{{currentUser?.fullName}}">
+      
       <i class="fa fa-user"></i>
        <!-- <strong style="font-size: 20px;">  {{ (currentUser?.fullName) }}</strong>  -->
        <!-- .slice(0, 2) || '').toUpperCase() -->
@@ -150,7 +150,7 @@
   </ng-container>
 
   <!-- NOT LOGGED IN --> 
-  <ng-container *ngIf="!isCustomerLoggedIn">
+  <ng-container *ngIf="!isLoggedIn">
     <div class="d-flex gap-2">
       <a routerLink="/login" class="btn btn-success">Login</a>
       <a routerLink="/register" class="btn btn-primary">Register</a>

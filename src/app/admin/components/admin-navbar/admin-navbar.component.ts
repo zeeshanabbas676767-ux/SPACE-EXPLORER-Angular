@@ -6,10 +6,9 @@ import { SpaceRoles } from '../../../shared/models/spaceRoles.model';
 import { SpaceRolesService } from '../../../shared/services/spaceRoles.service';
 import { UniverseDataService } from '../../../shared/services/universeData.service';
 import { UniverseData } from '../../../shared/models/universeData.models';
-import { Users } from '../../../shared/models/users.model';
 import { AuthService } from '../../../shared/services/auth.service';
-import { find } from 'rxjs';
 import { Role } from '../../../shared/models/role.model';
+import { AuthResponse } from '../../../shared/models/auth-Responce';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -32,9 +31,9 @@ export class AdminNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   isSubmitting: boolean = false;
   isLoggedIn = false;
-  
+  isCustomerLoggedIn = false;
   role: Role | null = null;
-  user: Users | null = null;
+ user: AuthResponse | null = null;
 
   constructor(
     private roleService: SpaceRolesService,
@@ -46,19 +45,33 @@ export class AdminNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadRoles();
-     this.auth.user$.subscribe(user => {
+
+    // 1. Immediately hydrate from localStorage if available
+  const storedUser = localStorage.getItem('user');
+  if (storedUser) {
+    try {
+      this.user = JSON.parse(storedUser);
+      this.isLoggedIn = !!this.user;
+    } catch (e) {
+      console.error('Error parsing stored user', e);
+    }
+  }
+
+    // 2. Subscribe to reactive updates from AuthService
+  this.auth.user$.subscribe(user => {
+    if (user) {
       this.user = user;
-    });
+      this.isLoggedIn = true;
+      this.isCustomerLoggedIn = user.role === 'Customer';
+    }
+  });
   }
 
-    get isCustomerLoggedIn(): boolean {
-    
-    return this.user?.roleId === 2;
-  }
 
-  get isAdminLoggedIn(): boolean {
-    return this.user?.roleId === 1;
-  }
+get isAdminLoggedIn(): boolean {
+if (!this.user || !this.user.role) return false;
+  return this.user.role.toLowerCase() === 'admin';
+}
 
   logout() {
   this.auth.logout();

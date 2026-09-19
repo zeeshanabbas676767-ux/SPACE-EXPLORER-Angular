@@ -1,49 +1,50 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../shared/services/auth.service';
-import { RouterLink } from "@angular/router";
 
 @Component({
+  selector: 'app-admin-login',
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
-}) 
+})
 export class AdminLoginComponent {
   email = '';
   password = '';
-  roleId = 1;
   error: string | null = null;
- loading = false;
+  loading = false;
   showPassword = false;
 
   constructor(private auth: AuthService, private router: Router) {}
+
   togglePassword(): void {
     this.showPassword = !this.showPassword;
   }
-  
-   submit() {
+
+  submit(): void {
     this.error = null;
+
     if (!this.email || !this.password) {
       this.error = 'Please provide email and password.';
       return;
     }
 
     this.loading = true;
-    this.auth.login({ email: this.email, password: this.password, roleId: this.roleId }).subscribe({
+
+    // Payload strictly matches C# LoginDto (Email, Password)
+    this.auth.login({ email: this.email, password: this.password }).subscribe({
       next: () => {
         this.loading = false;
-       
-        this.router.navigate(['/home']);
+        // Redirect directly to protected admin dashboard
+        this.router.navigate(['/admin/dashboard']);
       },
       error: (err) => {
         this.loading = false;
-        this.error = err?.error?.message || err?.message || 'Login failed';
-        console.error('Login error', err);
+        this.error = err?.error?.message || err?.message || 'Invalid email or password.';
+        console.error('Login error:', err);
       }
     });
   }
-  
-
 }

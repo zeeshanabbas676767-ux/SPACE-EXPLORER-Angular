@@ -1,54 +1,177 @@
+<div class="container-fluid py-4 mt-5">
+  <div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+      
+      <!-- Top Action Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h2 class="fw-bold mb-0">Users Management</h2>
+          <p class="text-muted small mb-0">Manage system administrators and registered customers</p>
+        </div>
+        <button class="btn btn-primary px-3" (click)="openCreateAdminModal()">
+          <i class="fa fa-user-plus me-2"></i> Add New Admin
+        </button>
+      </div>
 
-<div class="card mt-5">
-<div class="card-body mt-5">
-    <h1 class="text-center">Users Management</h1>
+      <!-- State Feedback -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+        <i class="fa fa-exclamation-circle me-2"></i> {{ error }}
+        <button type="button" class="btn-close" (click)="error = null"></button>
+      </div>
 
-      <!-- Error State -->
-  <div *ngIf="error" class="error-message text-center" style="font-size: 20px;">
-    ✗ {{ error }}
+      <div *ngIf="loading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status"></div>
+        <p class="mt-2 text-muted">Loading user data...</p>
+      </div>
+
+      <!-- Content Area -->
+      <div *ngIf="!loading">
+        <!-- Filter Tabs -->
+        <ul class="nav nav-tabs mb-4">
+          <li class="nav-item">
+            <button class="nav-link" [class.active]="selectedRoleFilter === 'All'" (click)="setFilter('All')">
+              All Users <span class="badge bg-secondary ms-1">{{ user.length }}</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [class.active]="selectedRoleFilter === 'Admin'" (click)="setFilter('Admin')">
+              Admins <span class="badge bg-primary ms-1">{{ getRoleCount('Admin') }}</span>
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [class.active]="selectedRoleFilter === 'Customer'" (click)="setFilter('Customer')">
+              Customers <span class="badge bg-info ms-1">{{ getRoleCount('Customer') }}</span>
+            </button>
+          </li>
+        </ul>
+
+        <!-- Users Data Table -->
+        <div class="table-responsive">
+          <table class="table table-hover align-middle border">
+            <thead class="table-light">
+              <tr>
+                <th style="width: 80px;">ID</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th style="width: 140px;" class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of filteredUsers">
+                <td class="fw-bold text-secondary">#{{ p.id }}</td>
+                <td>{{ p.fullName }}</td>
+                <td>{{ p.email }}</td>
+                <td>
+                  <span class="badge" [ngClass]="p.roleName === 'Admin' ? 'bg-primary' : 'bg-info text-dark'">
+                    {{ p.roleName }}
+                  </span>
+                </td>
+                <td class="text-center">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-outline-secondary" (click)="openEditModal(p)" title="Edit User">
+                      <i class="fa fa-pencil"></i>
+                    </button>
+                    <button class="btn btn-outline-danger" (click)="delete(p.id)" title="Delete User">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+
+              <tr *ngIf="filteredUsers.length === 0">
+                <td colspan="5" class="text-center text-muted py-4">
+                  No users match the selected filter.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
   </div>
+</div>
 
-  <!-- Loading State -->
-  <div *ngIf="loading" class="loading-message text-center" style="font-size: 20px;">
-    Loading...
+<!-- CREATE ADMIN MODAL -->
+<div class="modal fade" [class.show]="showCreateModal" [style.display]="showCreateModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Register New Admin</h5>
+        <button type="button" class="btn-close" (click)="closeModals()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="formError" class="alert alert-danger py-2 small">{{ formError }}</div>
+        
+        <form (ngSubmit)="submitCreateAdmin()">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" [(ngModel)]="adminForm.fullName" name="fullName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" [(ngModel)]="adminForm.email" name="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="password" class="form-control" [(ngModel)]="adminForm.password" name="password" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" [(ngModel)]="adminForm.confirmPassword" name="confirmPassword" required>
+          </div>
+          <div class="text-end mt-4">
+            <button type="button" class="btn btn-light me-2" (click)="closeModals()">Cancel</button>
+            <button type="submit" class="btn btn-primary" [disabled]="submitting">
+              <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+              Create Admin
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
-<div class="table-responsive mt-5" style="max-height: 400px;width: 80%; max-width: 100%; overflow-y: visible;">
-  <table class="table table-bordered table-hover align-middle">
-    <thead class="table-dark sticky-top">
-      <tr>
-        <th>ID</th>
-        <th>Full Name</th>
-         <th>Email</th>
-         <th>Role</th> 
-         <th>Action</th>
-      </tr> 
-    </thead>
-    <tbody>
-      <tr *ngFor="let p of user">
-        <td>{{p.id}}</td>
-        <td>{{p.fullName}}</td>
-        <!-- this.role.find(r => r.id === p.roleId)?.name -->
-         <td>{{p.email}}</td>
-         <th *ngIf="p.roleId === 1">Admin</th>
-          <th *ngIf="p.roleId === 2">Customer</th> 
-        <td>
-          <button 
-            class="btn btn-outline-danger btn-sm"
-            (click)="delete(p.id)"
-            title="Delete"
-          >  <i class="fa fa-trash"></i>
-          </button>
-        </td>
-    
-    </tr>
+</div>
 
-      <tr *ngIf="user.length === 0">
-        <td colspan="5" class="text-center text-muted py-4">
-          No Users found
-        </td>
-      </tr>
-    </tbody>
-  </table>
+<!-- EDIT USER MODAL -->
+<div class="modal fade" [class.show]="showEditModal" [style.display]="showEditModal ? 'block' : 'none'" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold">Edit User Details</h5>
+        <button type="button" class="btn-close" (click)="closeModals()"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="formError" class="alert alert-danger py-2 small">{{ formError }}</div>
+
+        <form (ngSubmit)="submitEditUser()">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" [(ngModel)]="editForm.fullName" name="editFullName" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" [(ngModel)]="editForm.email" name="editEmail" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Role</label>
+            <select class="form-select" [(ngModel)]="editForm.roleName" name="editRoleName">
+              <option *ngFor="let r of role" [value]="r.name">{{ r.name }}</option>
+            </select>
+          </div>
+          <div class="text-end mt-4">
+            <button type="button" class="btn btn-light me-2" (click)="closeModals()">Cancel</button>
+            <button type="submit" class="btn btn-success" [disabled]="submitting">
+              <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
-</div>
-</div>
+
+<!-- Modal Backdrop -->
+<div *ngIf="showCreateModal || showEditModal" class="modal-backdrop fade show"></div>

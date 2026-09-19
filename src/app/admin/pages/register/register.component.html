@@ -11,6 +11,10 @@
 <div class="container mt-5" style="max-width: 400px;">
   <h3 class="mb-3 text-center">Admin Register</h3>
 
+  <div *ngIf="error" class="alert alert-danger py-2 mb-3" role="alert">
+  {{ error }}
+</div>
+
   <form (ngSubmit)="  submit()" #registerForm="ngForm">
    <!-- <div class="text-center">
      <span *ngIf="errorMessage" class="text-danger">  {{ errorMessage }}</span>

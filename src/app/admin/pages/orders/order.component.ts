@@ -8,6 +8,7 @@ import { NgbDropdownModule } from "@ng-bootstrap/ng-bootstrap";
 import { AuthService } from "../../../shared/services/auth.service";
 import { FormsModule } from "@angular/forms";
 import { Users } from "../../../shared/models/users.model";
+import { AuthResponse } from "../../../shared/models/auth-Responce";
 
 @Component({
   standalone: true,
@@ -24,7 +25,7 @@ export class AdminOrderListComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   error: string | null = null;
-   user: Users | null = null;
+   user: AuthResponse | null = null;
       isLoggedIn = false;
 
   constructor(private orderService: OrderService, private auth: AuthService) {

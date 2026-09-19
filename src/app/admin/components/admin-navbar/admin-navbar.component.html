@@ -91,7 +91,7 @@ body {
         <div class="vr text-secondary mx-2 d-none d-lg-block" style="height: 24px;"></div>
 
         <!-- Admin Profile -->
-        <ng-container *ngIf="isAdminLoggedIn; else authButtons">
+        <ng-container *ngIf="isLoggedIn; else authButtons">
           <button 
             class="btn btn-primary rounded-pill d-flex align-items-center px-3 gap-2" 
             type="button" 
@@ -135,6 +135,7 @@ body {
      <div class="text-center p-4">
        <strong><h5 class="mb-3">{{user?.fullName}}</h5></strong>
       <h6 class="mb-3">{{user?.email}}</h6>
+      <span class="badge bg-success mb-4">Role: {{ user?.role }}</span>
     </div>
 
     <!-- FOOTER TOTAL + BUTTONS -->
