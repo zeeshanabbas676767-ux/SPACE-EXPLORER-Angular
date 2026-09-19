@@ -33,18 +33,36 @@ totalRecords: number = 0;
     this.loadProducts();
   }
 
+
+// loadProducts() {
+//   this.shopService.getAll(this.selectedSort, this.activeCategory,
+//     this.minPrice, this.maxPrice, this.pageNumber, this.pageSize)
+//     .subscribe(response => {
+//   console.log('API Response:', response);
+//   this.products = response.data;
+//   this.filteredProducts = [...this.products];
+//   this.totalRecords = response.totalRecords;
+//   this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
+//   this.categories = [...new Set(this.products.map(p => p.categoryName))];
+// });
+// }
+
 loadProducts() {
   this.shopService.getAll(this.selectedSort, this.activeCategory,
     this.minPrice, this.maxPrice, this.pageNumber, this.pageSize)
     .subscribe(response => {
-  console.log('API Response:', response);
-  this.products = response.data;
-  this.filteredProducts = [...this.products];
-  this.totalRecords = response.totalRecords;
-  this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
-  this.categories = [...new Set(this.products.map(p => p.categoryName))];
-});
+      this.products = response.data;
+      this.filteredProducts = [...this.products];
+      this.totalRecords = response.totalRecords;
+      this.totalPages = Math.ceil(this.totalRecords / this.pageSize);
+      
+      // Keep this safe category extraction so products never disappear
+      if (this.products && this.products.length > 0) {
+        this.categories = [...new Set(this.products.map(p => p.categoryName))];
+      }
+    });
 }
+
   // Filter products by category
   filterByCategory(category: string): void {
     this.pageNumber = 1; // Reset to first page on category change

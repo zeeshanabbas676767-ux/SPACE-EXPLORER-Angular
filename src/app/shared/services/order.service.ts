@@ -8,65 +8,36 @@ import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class OrderService {
+class OrderService {
 
   private apiUrl = `${environment.apiUrl}/orders`;
 
   constructor(private http: HttpClient) {}
 
-  /* ============================
-     GET ALL ORDERS
-     GET: api/orders
-  ============================ */
   getOrders(): Observable<DetailOrderDto[]> {
-    return this.http.get<DetailOrderDto[]>(this.apiUrl, {   withCredentials: true   });
+    return this.http.get<DetailOrderDto[]>(this.apiUrl);
   }
 
-  /* ============================
-     GET SINGLE ORDER
-     GET: api/orders/{id}
-  ============================ */
   getOrderById(id: number): Observable<DetailOrderDto> {
-    return this.http.get<DetailOrderDto>(`${this.apiUrl}/${id}`, {   withCredentials: true   });
+    return this.http.get<DetailOrderDto>(`${this.apiUrl}/${id}`);
   }
 
-  /* ============================
-     CREATE ORDER
-     POST: api/orders
-     Body: CreateOrderDto  
-  ============================ */
-  createOrder(orderDto: CreateOrderDto): Observable<CreateOrderDto> {
-    return this.http.post<CreateOrderDto>(this.apiUrl, orderDto, { withCredentials: true });
-    
+  createOrder(orderDto: CreateOrderDto): Observable<any> {
+    // 👈 Passing orderDto as the body correctly, interceptor handles the header
+    return this.http.post<any>(this.apiUrl, orderDto);
   }
-   
-  /* ============================
-     UPDATE ORDER STATUS (ADMIN / SYSTEM)
-     PATCH: api/orders/{orderId}/status
-     Body: OrderStatus enum value
-  ============================ */
+
   updateOrderStatus(orderId: number, status: number): Observable<any> {
-    return this.http.patch(
-      `${this.apiUrl}/${orderId}/status`, status, { withCredentials: true });
+    return this.http.patch(`${this.apiUrl}/${orderId}/status`, status);
   }
 
-  /* ============================
-     CANCEL ORDER
-     PUT: api/orders/{id}/cancel
-  ============================ */
   cancelOrder(orderId: number): Observable<void> {
-    return this.http.put<void>(
-      `${this.apiUrl}/${orderId}/cancel`,{  withCredentials: true}
-    );
+    // 👈 Fixed: No more passing options object into the body parameter slot
+    return this.http.put<void>(`${this.apiUrl}/${orderId}/cancel`, {});
   }
 
-  /* ============================
-     PAY ORDER
-     PUT: api/orders/{id}/pay
-  ============================ */
   payOrder(orderId: number): Observable<DetailOrderDto> {
-    return this.http.put<DetailOrderDto>(
-      `${this.apiUrl}/${orderId}/pay`, { withCredentials: true }
-    );
+    return this.http.put<DetailOrderDto>(`${this.apiUrl}/${orderId}/pay`, {});
   }
 }
+export { OrderService };
