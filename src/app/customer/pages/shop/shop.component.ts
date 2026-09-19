@@ -1,3 +1,5 @@
+
+// This file is for Shop view page.
 import { Component, OnInit } from '@angular/core';
 import { Shop } from '../../../shared/models/shop.model';
 import { ShopService } from '../../../shared/services/shop.service';

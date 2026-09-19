@@ -1,3 +1,6 @@
+
+
+// This file is for Universe Data view page.
 <style>
   .shop-filter-container {
     display: flex;
@@ -205,23 +208,6 @@
     </div>
   </div>
 
-  <div class="text-center mt-4">
-    <button class="btn btn-secondary me-2"
-            (click)="previousPage()"
-            [disabled]="pageNumber === 1">
-      Previous
-    </button>
-
-    <span class="mt-2">
-      Page {{ pageNumber }} of {{ totalPages }}
-    </span>
-
-    <button class="btn btn-secondary ms-2"
-            (click)="nextPage()"
-            [disabled]="pageNumber === totalPages">
-      Next
-    </button>
-  </div>
 </section> 
 
 <nav aria-label="Page navigation example">

@@ -1,3 +1,5 @@
+// This file is for Universe Data view page.
+
 import { Component, OnInit } from '@angular/core';
 import { UniverseData } from '../../../shared/models/universeData.models';
 import { UniverseDataService } from '../../../shared/services/universeData.service';
@@ -80,7 +82,7 @@ export class exploreUniverseComponent implements OnInit {
 
     // Filter by selected Space Role category
     if (this.activeroles !== 'All') {
-      results = results.filter((p: any) => p.spaceRole?.spaceRole_Name === this.activeroles);
+      results = results.filter((p: any) => p.spaceRole?.spaceRoleName === this.activeroles);
     }
 
     // Filter by search term
